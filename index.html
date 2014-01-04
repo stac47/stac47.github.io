@@ -1,0 +1,78 @@
+---
+layout: default
+title: Home stac47
+---
+
+<div class="container">
+  <div class="row row-offcanvas">
+    <div class="col-sm-3">
+      <h1>About me</h1>
+      <div class="bio">
+        <p>G'day, sir</p>
+        <p>
+        I am <b>Laurent Stacul</b>. I was born in 1981 in south west of France and, for the time being, I am living in the French Riviera area.
+        </p>
+        <p>
+        I started the wonderful journey in computers world when my parents bought a fantastic machine known as <a href="http://en.wikipedia.org/wiki/Atari_ST">Atari 520 STE</a>.
+        </p>
+        <p>
+        I am currently working for <a href="http://www.amadeus.com">Amadeus SAS</a> as middleware component engineer.
+        </p>
+        <p>
+        My favorite tools/languages are:
+          <ul>
+            <li>Python, Ruby, C, C++</li>
+            <li>Vim</li>
+            <li>Git</li>
+            <li>Linux</li>
+          </ul>
+        </p>
+        <p>
+        I am married with a <a href="http://www.prettypix.fr">fantastic web designer girl</a>. We are both fond of cyclism and long bike trips.
+        </p>
+      </div>
+      <div id="elife">
+        <h2>My e-life is here</h2>
+        <ul>
+          <li>
+            <a href="http://twitter.com/stac47" title="stac47/twitter" rel="me">
+              <img alt="Twitter" src="/img/twitter-48.png" />
+            </a>
+          </li>
+          <li>
+            <a href="http://fr.linkedin.com/pub/laurent-stacul/b/914/84a" title="stac47/linkedin" rel="me">
+              <img alt="Twitter" src="/img/linkedin-48.png" />
+            </a>
+          </li>
+          <li>
+            <a href="http://www.strava.com/athletes/stac47 " title="stac47/strava" rel="me">
+              <img alt="Strava" src="/img/strava-48.png" />
+            </a>
+          </li>
+          <li>
+            <a href="http://github.com/stac47" title="stac47/github" rel="me">
+              <img alt="Twitter" src="/img/github-48.png" />
+            </a>
+          </li>
+          <li>
+            <a href="mailto:laurent.staculNOSPAMNO@gmail.com" title="stac47/mail" rel="me">
+              <img alt="email" src="/img/email-48.png" />
+            </a>
+          </li>
+        </ul>
+        <!--
+        <iframe height='160' width='300' frameborder='0' allowtransparency='true' scrolling='no' src='http://www.strava.com/athletes/1959351/activity-summary/9715065e6d6da65f84502b3b23b7fa3de8dd85e7'></iframe>
+        -->
+      </div>
+  </div>
+  <div class="col-sm-9">
+    <div id="blob">
+      <h1>Blog Posts</h1>
+      <ul class="posts">
+        {% for post in site.posts %}
+          <li><span>{{ post.date | date_to_string }}</span> &raquo; <a href="{{ post.url }}">{{ post.title }}</a></li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+</div><!-- /.container -->
