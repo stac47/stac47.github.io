@@ -152,6 +152,26 @@ Hereafter is a list of special effets with there builtin values:
 | Text with good highlight            | Curses::A_TOP                |
 | Best highlighting                   | Curses::A_STANDOUT           |
 
+Defining color attributes is done with the `Curses.init_pair(pair, fg, bg)`. A
+pair for colors are associated to an id. For instance, if you want to use red
+color to write on a blue background, you can define a key pair as shown below:
+
+{% highlight ruby %}
+Curses.init_pair(1, Curses::COLOR_RED, Curses::COLOR_BLUE)
+{% endhighlight %}
+
+To turn this pair into an attribute, you have to use the
+`Curses.color_pair(pair)` function.
+
+Now, previously described attributes can be OR'ed to be used altogether and
+passed to the `Curses.attrset(attr)`. In the following code snippet, "Hello
+World" will blink on the screen written in red on a blue background.
+
+{% highlight ruby %}
+Curses.attrset(Curses.color_pair(1) | Curses::A_BLINK)
+Curses.addstr("Hello World")
+{% endhighlight %}
+
 # Using windows
 
 Using the functions exposed by the *Curses* module will implicitly work on the
@@ -171,6 +191,99 @@ begin
   Curses.refresh  # Refresh the screen
   Curses.getch  # Waiting for a pressed key to exit
 ensure
+  Curses.close_screen
+end
+{% endhighlight %}
+
+Generally, you will want to create several windows on the screen or access the
+*stdscr* in a more object oriented fashion. This is the purpose of the
+`Curses::Window` object. You can access the *stdscr* Window object thanks to
+the function `Curses.stdscr`. The previous example could be rewritten as
+follows:
+
+{% highlight ruby %}
+require 'curses'
+
+Curses.init_screen
+begin
+  win = Curses.stdscr
+  x = win.maxx / 2
+  y = win.maxy / 2
+  win.setpos(y, x)
+  win.addstr("Hello World")
+  win.refresh
+  win.getch
+ensure
+  Curses.close_screen
+end
+{% endhighlight %}
+
+But windows become an interesting feature when you need to manage several parts
+of the screen with different refresh cycles. Curses was created in the old ages
+when the terminal had very slow connection to the server and refreshing the
+whole screen everytime was not optimized.
+
+With a Window, you define a rectangular area inside the screen (for
+unrestricted area, please have a look at `Curses::Pad` object). Each window has
+its own dimension and upper-left corner origin that you can pass to the
+constructor `Curses::Window.new(height, width, top, left)`. There are several
+methods on this object that need to be understood for the next example:
+
+- `maxx` and `maxy` returns the maximum coordinates reachable in a window.
+- `box(vert, hor)` will surround the windows with the *vert* and *hor*
+characters.
+- `setpos(y, x)` will move the cursor at position (y, x) relatively to the
+current window origin.
+- `addstr(str)` or `<<(str)` alias will display the *str* text at the current
+cursor position.
+- `refresh` will redraw your window. It is an important method, windows are not
+updated as soon as they are modified but have to be manually refreshed. This
+way, you can make several modifications and wait to have the screen in an
+expected state to publish the new screen. This was of course very relevant on
+old terminals.
+- `clear` will erase the window. Note that you will have to call the `refresh`
+method to see a change.
+- `close` will free the memory dedicated to the current window object. Trying
+to display something in this window will lead to a `RuntimeError`. This method
+do not clear the window.
+
+{% highlight ruby %}
+require 'curses'
+
+Curses.init_screen
+Curses.curs_set(0)
+
+begin
+  # Building a static window
+  win1 = Curses::Window.new(Curses.lines / 2 - 1, Curses.cols / 2 - 1, 0, 0)
+  win1.box("o", "o")
+  win1.setpos(2, 2)
+  win1.addstr("Hello")
+  win1.refresh
+
+  # In this window, there will be an animation
+  win2 = Curses::Window.new(Curses.lines / 2 - 1, Curses.cols / 2 - 1, 
+                            Curses.lines / 2, Curses.cols / 2)
+  win2.box("|", "-")
+  win2.refresh
+  2.upto(win2.maxx - 3) do |i|
+    win2.setpos(win2.maxy / 2, i)
+    win2 << "*"
+    win2.refresh
+    sleep 0.05 
+  end
+
+  # Clearing windows each in turn
+  sleep 0.5 
+  win1.clear
+  win1.refresh
+  win1.close
+  sleep 0.5
+  win2.clear
+  win2.refresh
+  win2.close
+  sleep 0.5
+rescue => ex
   Curses.close_screen
 end
 {% endhighlight %}
