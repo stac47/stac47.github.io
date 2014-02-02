@@ -18,16 +18,16 @@ different interpreters and the gems you install within each one from
 [RubyGems][2].
 
 I had a small project to build using *curses* library. A binding is embedded in
-the Python library and so seems it to be the case in Ruby stdlib. I dare say my
+the Python library and so seems it to be the case in Ruby's stdlib. I dare say my
 first attemps where not that successful (`require 'curses'` failed). Googling
 around, I found out that it was removed from the stdlib in [2.1.0 release][3]
 even if it was still in the official documentation ([bug][4]).
 
-This light small issues solved, I looked for tutorials but the amount of
-documentations is not that high. So the aim of this post: having the same level
-of tutorial for curses as it is in [Python documentation][5]. I don't think
-that a Rubyist should look at the original C documentation of *curses* to start
-with curses ruby binding.
+This small issues solved, I looked for tutorials but the amount of
+documentations is not that high. Hence, the aim of this post: having the same
+level of tutorial for curses as it is in [Python documentation][5]. I don't
+think that a Rubyist should look at the original C documentation of *curses* to
+start with curses ruby binding.
 
 #Curses and Ruby
 
@@ -61,7 +61,7 @@ on initialization. It takes the maximum lines and columns available on the
 current terminal.
 
 Hence, before using *curses* you have to initialize the library: this step will
-gather information on your terminal and save the current modes (see
+gather information about your terminal and save the current modes (see
 `Curses.def_prog_mode`). You will be able to access these data as
 it is shown in the following example:
 
@@ -84,12 +84,13 @@ To use the *curses* library in a program you need to load it thanks to the
 **require** statement which gives you access to the Curses module. The
 `Curses.init_screen` initializes *curses*, we retrieved the number of lines and
 colomns available on the *stdscr*. To be sure *curses* is stopped at the end of
-the program execution, the call to `Curses.close_screen` is inclosed in an ensure
+the program execution, the call to `Curses.close_screen` is enclosed in an ensure
 block (so the terminal modes that where saved during initialization are
-restored with `Curses.reset_prog_mode`).
+restored with `Curses.reset_prog_mode`). This will avoid messing up your
+terminal if an error occurs.
 
 Notice that we could have included the Curses module to avoid repeating the
-Curses word in front of each function call.
+Curses namespace all along the program.
 
 {% highlight ruby %}
 require 'curses'
@@ -198,8 +199,14 @@ end
 Generally, you will want to create several windows on the screen or access the
 *stdscr* in a more object oriented fashion. This is the purpose of the
 `Curses::Window` object. You can access the *stdscr* Window object thanks to
-the function `Curses.stdscr`. The previous example could be rewritten as
-follows:
+the function `Curses.stdscr`.
+
+Many functions defined in `Curses` module like `addstr`, `getch` are simply a
+shortcut to the `Window.addstr` or `Window.getch` called on the *stdscr* Window
+object. Hence, until the end of this tutorial, we will talk only about the
+methods defined on `Window` object.
+
+The previous example could be rewritten as follows:
 
 {% highlight ruby %}
 require 'curses'
@@ -221,7 +228,7 @@ end
 But windows become an interesting feature when you need to manage several parts
 of the screen with different refresh cycles. Curses was created in the old ages
 when the terminal had very slow connection to the server and refreshing the
-whole screen everytime was not optimized.
+whole screen everytime would not have been optimized.
 
 With a Window, you define a rectangular area inside the screen (for
 unrestricted area, please have a look at `Curses::Pad` object). Each window has
@@ -236,7 +243,7 @@ characters.
 current window origin.
 - `addstr(str)` or `<<(str)` alias will display the *str* text at the current
 cursor position.
-- `refresh` will redraw your window. It is an important method, windows are not
+- `refresh` will redraw your window. It is an important method; windows are not
 updated as soon as they are modified but have to be manually refreshed. This
 way, you can make several modifications and wait to have the screen in an
 expected state to publish the new screen. This was of course very relevant on
@@ -251,7 +258,7 @@ do not clear the window.
 require 'curses'
 
 Curses.init_screen
-Curses.curs_set(0)
+Curses.curs_set(0)  # Invisible cursor
 
 begin
   # Building a static window
@@ -287,6 +294,85 @@ rescue => ex
   Curses.close_screen
 end
 {% endhighlight %}
+
+# Managing keyboard input
+
+Basically, a user will interact with the terminal thanks to his keyboard and
+this is what this chapter will deal with. We won't talk about the ability to
+handle the mouse control in this tutorial.
+
+You have one main way to capture the keys the user pressed: `Window.getch` will
+wait by default the user to press a key and return an uninterpreted value
+(pressing 'a' will return 'a', pressing 'F8' will return a code). This default
+behavior can be changed in two ways.
+
+First the blocking nature can be deactivate with `Window.nodelay=(bool)`
+method. If the value is set to `true`, the method `getch` won't wait for the
+user input.
+
+Second allowed change is the fact that Curses can interpret the key pressed.
+This is activated by the `Window.keypad=(bool)` method. If the value `true` is
+passed to this method, when the left key is pressed, the `getch` method will
+return `Curses::Key::LEFT`. All the keys are mapped inside the `Curses:Key`
+module. The following example shows this in action:
+
+{% highlight ruby %}
+input = win.getch
+if input == Curses::Key::LEFT then
+    win.addstr("Left key")
+else
+    win.addstr("Other key")
+end
+win.refresh
+{% endhighlight %}
+
+There is another method dedicated to capturing the user input:
+`Windows.getstr`. This method is probably less usefull than `Window.getch` but
+can be handy in some situations. This method, by default, waits for the user
+input but continue acquiring the characters pressed until the user press
+**Enter**. The return value is a string.
+
+You probably wonder why the `getch` method is attached to a window object. It
+could be a general function defined at Curses module level (In fact, it is the
+case, but it is only a shortcut to `Curses.stdscr.getch`). Actually, the window
+on which you call the method takes the focus. This means overlaping windows
+will put in the background. Let's have a look at what happens when you draw
+somes windows and call `Curses.getch`.
+
+{% highlight ruby %}
+  win1 = Curses::Window.new(10, 20, 0, 0)
+  win1.box("|", "-")
+  win1.refresh
+  input = Curses.getstr
+{% endhighlight %}
+
+The window 'win1' will quickly appear and fade out because the **stdscr** will
+gain the focus and we can say it will come upfront hiding as a metter of fact
+'win1'.
+
+A solution to this is to create subwindows of the *stdscr* windows. *stdscr*
+can then be considered as a container. Creating a subwindows is done with the
+`Window.subwin(height, width, top, left)`.
+
+{% highlight ruby %}
+  win1 = Curses.stdscr.subwin(10, 20, 0, 0)
+  win1.box("|", "-")
+  win1.refresh
+  input = Curses.getstr
+{% endhighlight %}
+
+# More information about Curses
+
+- Of course the best documentation is inside the manual pages: `$ man ncurses`.
+- <http://tldp.org/HOWTO/NCURSES-Programming-HOWTO/> is a good documentation
+about the C API which goes deeper than this one.
+
+# A last word
+
+I hope this is a good start point Curses Ruby API and this will be useful.
+
+If you spot some errors or have any suggestion about this text, please open an
+issue on <https://github.com/stac47/stac47.github.io>.
 
 [1]: http://rvm.io
 [2]: http://rubygems.org
