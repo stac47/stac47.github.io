@@ -36,6 +36,8 @@ goal was to manipulate a terminal screen to draw windows, to display some text
 and also to handle the input events (keyboard, mouse). In this sense, it was an
 ancestor of graphical user interfaces.
 
+![Terminal view](/img/posts/2014_01_24-ruby-and-curses-tutorial-1.png "Pyradio: a cool radio player in CLI")
+
 Why would you want to use this today when we can manipulate a computer with a
 high definition 3D graphical interface ? There could be many reasons for this:
 
