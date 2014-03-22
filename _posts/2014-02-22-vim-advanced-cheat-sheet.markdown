@@ -284,8 +284,18 @@ Keystrokes            | Description
 Side note: When in Visual Mode, pressing `:` will automatically fill the range
 corresponding to the select block of text.
 
-#### Substitute in several files
+#### Tips
+
+##### Substitute in several files
 
 1. Fill the args with the list of file to modify: `:args **/*.cpp`.
-2. Apply the substitution: `:argfo %s/old/new/g`.
+2. Apply the substitution: `:argdo %s/old/new/g`.
 
+##### Convert from CamelCase to underscore_case
+
+The trick is to use: 
+
+- the `\l` (lowercase 'L'). Documentation at: `:h \l`.
+- the `\1`, `\2`... syntax. Documentation at: `:h pattern`.
+
+This gives the following command: `:%s/\v(\l)(\u)/\1_\l\2/gc`.
