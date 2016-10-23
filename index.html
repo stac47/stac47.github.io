@@ -7,7 +7,7 @@ title: Home stac47
   <div class="row row-offcanvas">
     <div class="col-xs-3">
       <h4>About me</h4>
-      <div class="bio">
+      <div id="bio" class="row">
         <p>G'day, sir</p>
         <p>
         My name is <b>Laurent Stacul</b>. I was born in 1981 in south west of France and, for the time being, I am living in the French Riviera area.
@@ -25,7 +25,7 @@ title: Home stac47
         My wife is a <a href="http://www.prettypix.fr">fantastic web designer and a great artist </a>. We are both fond of cyclism and long bike trips.
         </p>
       </div>
-      <div id="elife">
+      <div id="elife" class="row">
         <h4>My e-life is here</h4>
         <ul>
           <li>
@@ -58,17 +58,23 @@ title: Home stac47
               <img alt="email" src="/img/email-48.png" />
             </a>
           </li>
+          <li>
+            <a href="files/laurent.stacul@gmail.com.public.key">
+              <img alt="GnuPG Public Key" src="/img/gnupg-48.png" />
+            </a>
+          </li>
         </ul>
       </div>
-  </div>
-  <div class="col-xs-9">
-    <div id="blob">
-      <h4>Blog Posts</h4>
-      <ul class="posts">
-        {% for post in site.posts %}
-          <li><span>{{ post.date | date_to_string }}</span> &raquo; <a href="{{ post.url }}">{{ post.title }}</a></li>
-        {% endfor %}
-      </ul>
+    </div>
+    <div class="col-xs-8 col-md-offset-1">
+      <div id="blob">
+        <h4>Blog Posts</h4>
+        <ul class="posts">
+          {% for post in site.posts %}
+            <li><span>{{ post.date | date_to_string }}</span> &raquo; <a href="{{ post.url }}">{{ post.title }}</a></li>
+          {% endfor %}
+        </ul>
+      </div>
     </div>
   </div>
 </div><!-- /.container -->
