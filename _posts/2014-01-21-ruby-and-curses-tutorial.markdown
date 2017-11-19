@@ -19,7 +19,7 @@ different interpreters and the gems you install within each one from
 
 I had a small project to build using *curses* library. A binding is embedded in
 the Python library and so seems it to be the case in Ruby's stdlib. I dare say my
-first attemps where not that successful (`require 'curses'` failed). Googling
+first attempts where not that successful (`require 'curses'` failed). Googling
 around, I found out that it was removed from the stdlib in [2.1.0 release][3]
 even if it was still in the official documentation ([bug][4]).
 
@@ -85,7 +85,7 @@ puts "Number of columns: #{nb_cols}"
 To use the *curses* library in a program you need to load it thanks to the
 **require** statement which gives you access to the Curses module. The
 `Curses.init_screen` initializes *curses*, we retrieved the number of lines and
-colomns available on the *stdscr*. To be sure *curses* is stopped at the end of
+columns available on the *stdscr*. To be sure *curses* is stopped at the end of
 the program execution, the call to `Curses.close_screen` is enclosed in an ensure
 block (so the terminal modes that where saved during initialization are
 restored with `Curses.reset_prog_mode`). This will avoid messing up your
@@ -107,12 +107,12 @@ end
 {% endhighlight %}
 
 After initialization, you can set several options. Generally, you don't want to
-display the keys that are pressed by the user when they are catched by the
+display the keys that are pressed by the user when they are caught by the
 `Curses.getch` function or the `Curses::Window.getch` method. To disable this,
 you can use `Curses.noecho`. To reactivate it, `Curses.echo` is available.
 
 When working in a terminal, commands are buffered until the user press Enter.
-You generally will not expect this behaviour when writting a graphical user
+You generally will not expect this behaviour when writing a graphical user
 interface and you will want the key to answer as soon as they are pressed. This
 is what the **cbreak mode** has been created for. To toggle between these two
 modes, you can use `Curses.cbreak` and `Curses.nocbreak` functions or their
@@ -141,7 +141,7 @@ blue background. So, there are special attributes relative to special effect
 and, regarding colors, attributes are defined as pairs composed of the
 foreground color and the background color.
 
-Hereafter is a list of special effets with there builtin values:
+Hereafter is a list of special effects with there builtin values:
 
 | Effect                              | Constant name                |
 | ----------------------------------- | ---------------------------- |
@@ -230,7 +230,7 @@ end
 But windows become an interesting feature when you need to manage several parts
 of the screen with different refresh cycles. Curses was created in the old ages
 when the terminal had very slow connection to the server and refreshing the
-whole screen everytime would not have been optimized.
+whole screen every time would not have been optimized.
 
 With a Window, you define a rectangular area inside the screen (for
 unrestricted area, please have a look at `Curses::Pad` object). Each window has
@@ -329,7 +329,7 @@ win.refresh
 {% endhighlight %}
 
 There is another method dedicated to capturing the user input:
-`Windows.getstr`. This method is probably less usefull than `Window.getch` but
+`Windows.getstr`. This method is probably less useful than `Window.getch` but
 can be handy in some situations. This method, by default, waits for the user
 input but continue acquiring the characters pressed until the user press
 **Enter**. The return value is a string.
@@ -337,9 +337,9 @@ input but continue acquiring the characters pressed until the user press
 You probably wonder why the `getch` method is attached to a window object. It
 could be a general function defined at Curses module level (In fact, it is the
 case, but it is only a shortcut to `Curses.stdscr.getch`). Actually, the window
-on which you call the method takes the focus. This means overlaping windows
+on which you call the method takes the focus. This means overlapping windows
 will put in the background. Let's have a look at what happens when you draw
-somes windows and call `Curses.getch`.
+some windows and call `Curses.getch`.
 
 {% highlight ruby %}
   win1 = Curses::Window.new(10, 20, 0, 0)
