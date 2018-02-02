@@ -29,7 +29,7 @@ level of tutorial for curses as it is in [Python documentation][5]. I don't
 think that a Rubyist should look at the original C documentation of *curses* to
 start with curses ruby binding.
 
-#Curses and Ruby
+# Curses and Ruby
 
 Basically, curses is an old library distributed on many Unix distribution whose
 goal was to manipulate a terminal screen to draw windows, to display some text
