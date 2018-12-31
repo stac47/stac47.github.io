@@ -115,9 +115,9 @@ role of the linker to fill such portion of the assembler code with correct
 values when the object file has to be used.
 
 But the linker cannot magically guess which values to put in the final binary
-file. The compiler will some information in ELF sections that are dedicated to
-the relocations: depending on the targeted architecture, the involved section
-are `.rel.text` (x86_32) or `.rela.text` (x86_64).
+file. The compiler will put some information in ELF sections that are dedicated
+to the relocations: depending on the targeted architecture, the involved
+section are `.rel.text` (x86_32) or `.rela.text` (x86_64).
 
 ```
 $readelf -r nothing.o
@@ -129,7 +129,7 @@ Relocation section '.rela.text' at offset 0x250 contains 1 entries:
 
 What this says to the link editor is: "Be careful, what is at offset 22 has to
 be replaced by an address that can be calculated in the way described by the
-relocation type R_X*R_X86_64_PC32. For such a calculation, you can use the
+relocation type X86_64_PC32. For such a calculation, you can use the
 value (here __0x7__) and the addend (here -4)". The type of relocation tells
 the linker how to calculate the effective address. In this case S + A - P
 where:
@@ -190,7 +190,7 @@ Here we spot 2 things:
 *   The linker calculated that call to `doNothing` was a jump to
     `0x6a6 + 0xffffffe1 = 0x687`. Here the `.text` section of `nothing.o` starts at
     0x680. The linker knows from the relocation section that it will have to
-    change the value at `0x6a2 (=0x680 + 0x22)` so that it jump towards `0x687
+    change the value at `0x6a2 (=0x680 + 0x22)` so that it jumps towards `0x687
     (=0x680 + 0x7)`. The relocation being of type `R_X86_64_PC32`, the value
     will be relative to the PC (Program Counter), the IP register will be `0x6a6
     (=0x6a2 + 4 bytes = 0x680 + 0x22 + 0x4)`. The relative jump will then be:
@@ -354,7 +354,7 @@ gcc -shared -o libnothing.so nothing_pic.o
 
 ## Calling a Shared Library Function
 
-In the previous example, their was a PC-relative relocation for the symbol
+In the previous example, there was a PC-relative relocation for the symbol
 `doAlmostNothing`. This was possible because the linker knew where the function
 was located.
 
@@ -559,7 +559,7 @@ Symbol table '.dynsym' contains 17 entries:
 
 If the library is loaded at `0x7ffff7bd7000`, the location of the
 `kExternString` (of the pointer toward the sequence of null-terminated
-characters) will be `0x7ffff7dd8040`. This value is copied the GOT.
+characters) will be `0x7ffff7dd8040`. This value is copied to the GOT.
 
 ```
 (gdb) x/a 0x7ffff7bd7000 + 0x201040
