@@ -5,7 +5,7 @@ date:   2019-11-06 15:28:07
 categories: go delve debug
 ---
 
-Sometimes you have some programs that read the input from the standard input.
+Sometimes you have some programs that read their input from the standard input.
 Generally a convenient way to pass the inputs is to pipe to the program like
 this:
 
@@ -49,7 +49,8 @@ Type 'help' for list of commands.
 ```
 
 Now, if you want to pass some input into stdin, you can paste the data directly
-into __terminal 1__.
+into __terminal 1__and you can inspect your program with the delve command on
+the __terminal 2__.
 
 This is a first step that can be useful when the data to paste is not very big.
 
