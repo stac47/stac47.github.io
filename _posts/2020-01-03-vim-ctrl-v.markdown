@@ -1,0 +1,33 @@
+---
+layout: post
+title:  "CTRL-V in Vim"
+date:   2020-01-03 00:00:01
+categories: vim
+---
+
+This year starts well with this small discovery of the CTRL-V keystroke in
+__Vim__ insert mode. In fact, I did not need this before but as I had to learn
+the __Go__ language, this tricks became very useful.
+
+In __Go__, strangely, the indentation character is the tabulation and this is
+enforced by the language itself. Until now, I indented my code with several
+spaces depending on the file type. So, by default, I set __Vim__ to expand the
+tabulation into spaces:
+
+```
+" Spaces instead of tabs
+set expandtab
+```
+
+I must say the [vim-go](https://github.com/fatih/vim-go) is excellent and I
+don't need to pay attention on this when I am coding. But the problem comes
+when I edit some text files containing some __Go__ code, like in Markdown files.
+When I edit some code sections in these files, I need to force __Vim__ to insert
+the real tab.
+
+To do this, you only need to enter in Insert Mode and use CTRL-V<tab>. This is
+explained here: `:h ins-expandtab`.
+
+Ok it is not the discovery of the year, but it can be useful.
+
+Happy New Year !
