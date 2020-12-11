@@ -1,0 +1,27 @@
+---
+layout: post
+title:  "Vim Tips"
+date:   2020-12-11 00:00:01
+categories: vim
+---
+
+This post evolves each time I discover an exciting feature of Vim.
+
+## Pasting The Output of a Shell Command
+
+Recently, I wondered if it was possible to display in a buffer a specific
+revision of a file taken from the Git repository of my project without leaving
+Vim. In my case, the file was removed in the latest branches on the project and
+I had to backport some logic that was in the original file.
+
+I ended up on the __read__ command and more precisely to the following form
+which is documented at `:h read!`:
+
+> :[range]r[ead] [++opt] !{cmd}
+
+So if I want to fill an empty buffer with the file of a specified
+commit/branch:
+
+```
+:r !git show old_branch:src/build.sh
+```
