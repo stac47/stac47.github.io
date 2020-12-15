@@ -14,7 +14,7 @@ enforced by the language itself. Until now, I indented my code with several
 spaces depending on the file type. So, by default, I set __Vim__ to expand the
 tabulation into spaces:
 
-```
+```vim
 " Spaces instead of tabs
 set expandtab
 ```

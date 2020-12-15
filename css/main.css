@@ -14,6 +14,22 @@ div#elife li {
   margin: 5px;
 }
 
+h1 {
+  font-size: 28px;
+}
+
+h2 {
+  font-size: 24px;
+}
+
+h3 {
+  font-size: 19px;
+}
+
+h4 {
+  font-size: 16px;
+}
+
 /*****************************************************************************/
 /*
 /* Posts
@@ -29,31 +45,8 @@ div#elife li {
   line-height: 1.75em;
 }
 
-.posts span {
-  color: #aaa;
-  font-family: Monaco, "Courier New", monospace;
-  font-size: 80%;
-}
-
-/* standard */
-.post pre {
-  border: 1px solid #ddd;
-  background-color: #eef;
-  padding: 0 .4em;
-}
-
 .post ul, .post ol {
   margin-left: 1.35em;
-}
-
-.post code {
-  border: 1px solid #ddd;
-  background-color: #eef;
-  padding: 0 .2em;
-}
-
-.post pre code {
-  border: none;
 }
 
 .post img {
@@ -91,17 +84,6 @@ div#elife li {
 
 .post table tbody tr:hover {
   background-color: rgb(238, 238, 255);
-}
-
-/* terminal */
-.post pre.terminal {
-  border: 1px solid #000;
-  background-color: #333;
-  color: #FFF;
-}
-
-.post pre.terminal code {
-  background-color: #333;
 }
 
 .strava-badge- {

@@ -14,7 +14,7 @@ Modern architecture generally have several levels of cache between the CPU and R
 On the current computer I am working on, there are 3 levels of cache as we can
 see with the `lscpu` command:
 
-```
+```console
 stac@debian:~>lscpu
 Architecture:        x86_64
 CPU op-mode(s):      32-bit, 64-bit
@@ -96,14 +96,14 @@ The `average` function loops on all the structures contained in the array. This
 leads to a cache miss on each iteration of the loop. We can use the Cachegrind
 tool to visualize the number of cache misses:
 
-```
-valgrind --tool=cachegrind --branch-sim=yes --cache-sim=yes --cachegrind-out-file=chg.out ./myprog
-cg_annotate chg.out `pwd`/myprog.cpp
+```console
+> valgrind --tool=cachegrind --branch-sim=yes --cache-sim=yes --cachegrind-out-file=chg.out ./myprog
+> cg_annotate chg.out `pwd`/myprog.cpp
 ```
 
 Here is the interesting part of the output:
 
-```
+```console
 ==XXXX== D   refs:      2,146,050  (1,397,466 rd   + 748,584 wr)
 ==XXXX== D1  misses:      222,386  (  119,985 rd   + 102,401 wr)
 ==XXXX== LLd misses:      209,999  (  108,396 rd   + 101,603 wr)
@@ -145,7 +145,7 @@ when we access `persons.age` array which is 400'000 bytes a big part of it can
 be access through the L1 cache in each iteration of the loop, reducing the
 number of cache misses as we can see in the Cachegrind output:
 
-```
+```console
 ==XXXX== D   refs:      2,271,052  (1,322,467 rd   + 948,585 wr)
 ==XXXX== D1  misses:      129,213  (   26,807 rd   + 102,406 wr)
 ==XXXX== LLd misses:      112,949  (   11,368 rd   + 101,581 wr)
@@ -167,7 +167,7 @@ contiguous bytes can allow some compiler optimization.
 If we compile the second version of the program in gcc with the following
 options `-O2 -march=native`, the `average` function will look like this:
 
-```asm
+```x86asm
 average(Person const&):
   leaq 6000000(%rdi), %rax
   leaq 6400000(%rdi), %rdx
@@ -187,7 +187,7 @@ bytes, we add the ages in the %ecx register.
 Now, if we compile the program with the flags `-O3 -march=native`, let us have
 a look at the loop:
 
-```asm
+```x86asm
 average(Person const&):
   ...
   shrl $3, %ecx
@@ -236,7 +236,7 @@ Compiling with gcc with no optimization (`-O0 -march=native`), would lead to a
 call to the square function (with the argument copied in `%rdi` register and
 the creation of a stack frame).
 
-```asm
+```x86asm
 main:
   ...
   movl %eax, %edi
@@ -253,7 +253,7 @@ The obvious optimization would be to directly multiply the value that is passed
 to main by itself without calling the function. This is what is done with the
 following gcc options `-O1 -march=native`:
 
-```asm
+```x86asm
 main:
   subq $8, %rsp
   imull %edi, %edi
@@ -313,7 +313,7 @@ compute the sum of the values. In this state, to call the method `value()`, the
 compiler has no other choice than finding the method address in the good
 virtual table which is done like this with no optimization.
 
-```asm
+```x86asm
   call std::array<ValueProviderBase*, 100000ul>::operator[](unsigned long)
   movq (%rax), %rax
   movq (%rax), %rdx
@@ -362,7 +362,7 @@ int main(int argc, const char* argv[])
 Without optimization requested, gcc would do a direct call to
 `ConstValueProvider::value()`:
 
-```asm
+```x86asm
   call std::array<ValueProviderBase*, 100000ul>::operator[](unsigned long)
   movq (%rax), %rax
   movq %rax, %rdi
@@ -372,7 +372,7 @@ Without optimization requested, gcc would do a direct call to
 Better ! And if we set an optimization level greater than 1, the call can be inlined.
 And still better, the result of the whole loop can be computed at compile time:
 
-```asm
+```x86asm
 main:
   subq $8, %rsp
   movl $4200000, %esi
