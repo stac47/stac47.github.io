@@ -25,3 +25,14 @@ commit/branch:
 ```
 :r !git show old_branch:src/build.sh
 ```
+
+## Insert The Current Date/Time
+
+We can use the Vim internal `strftime()` function with the `put` command (see
+`:h strftime()` and `:h put`). Be careful, your system needs to have this
+function available.
+
+So to insert the current date in the default format:
+```
+:pu=strftime('%c')
+```
