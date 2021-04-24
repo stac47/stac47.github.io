@@ -127,6 +127,11 @@ Relocation section '.rela.text' at offset 0x250 contains 1 entries:
 000000000022  000900000002 R_X86_64_PC32     0000000000000007 doNothing - 4
 ```
 
+(On recent versions of GCC, the relocation type has changed to R_X86_64_PLT32
+on `x86_64`. This is due to the  [commit][binutils_reloc_commit]. This does not
+change anything for static linkage explanation and mentioning the PLT now would
+be confusing: go to the dynamic link paragraph to know more about the PLT)
+
 What this says to the link editor is: "Be careful, what is at offset 22 has to
 be replaced by an address that can be calculated in the way described by the
 relocation type X86_64_PC32. For such a calculation, you can use the
@@ -596,3 +601,5 @@ Request.
     Guide](https://docs.oracle.com/cd/E23824_01/html/819-0690/toc.html)
 *   Ulrich Drepper's [How To Write Shared
     Libraries](https://www.akkadia.org/drepper/dsohowto.pdf)
+
+[binutils_reloc_commit]: https://sourceware.org/git/?p=binutils-gdb.git;a=commitdiff;h=bd7ab16b4537788ad53521c45469a1bdae84ad4a;hp=80c96350467f23a54546580b3e2b67a65ec65b66
