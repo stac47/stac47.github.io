@@ -204,11 +204,11 @@ Keystrokes            | Description
 `<C-v>{code}`         | Insert special character by its code
 `<C-k>{char1}{char2}` | Insert special character by digraph
 
-Example:
+Examples:
 
+- To insert a character from unicode codepoint, for instance, unbreakable space
+(`0X00A0`), use `<C-v>xa0`.
 - In french, to insert 'œ' simply type: `<C-k>oe`.
-- The 'ù' letter in french is only used in one word but has its own key. You can
-also use ``<C-k>`u``.
 
 ## Registers
 
