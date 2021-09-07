@@ -23,6 +23,8 @@ The format has the following format:
 
 ## Generic Examples
 
+Complete documentation: `man 3 printf`
+
 ### Strings/Characters
 
 |Format              |Values                   |Display                       |Comments                                |
@@ -76,3 +78,42 @@ The format has the following format:
 |--------------------|-------------------------|------------------------------|----------------------------------------|
 |`%m`                |nothing                  |`Success`                     |Display errno                           |
 |`%m`                |nothing                  |`No such file or directory`   |Display errno after an error            |
+
+## Go Extensions
+
+Complete documentation: `go doc fmt`
+
+### Generic
+
+|Format              |Values                   |Display                       |Comments                                |
+|--------------------|-------------------------|------------------------------|----------------------------------------|
+|%v                  |{1 3.14}                 |`{1 3.14}`                    |Generic value                           |
+|%+v                 |{1 3.14}                 |`{a:1 b:3.14}`                |Value with field names                  |
+|%#v                 |{1 3.14}                 |`main.S{a:1, b:3.14}`         |Go-syntax                               |
+|%T                  |{1 3.14}                 |`main.S`                      |Type                                    |
+
+### Strings
+
+|Format              |Values                   |Display                       |Comments                                |
+|--------------------|-------------------------|------------------------------|----------------------------------------|
+|%q                  |"Hello World!"           |`"Hello World!"`              |Quoted strings                          |
+
+### Booleans
+
+|Format              |Values                   |Display                       |Comments                                |
+|--------------------|-------------------------|------------------------------|----------------------------------------|
+|%t/%t               |true, false              |`true/false`                  |Boolean                                 |
+
+### Integers
+
+|Format              |Values                   |Display                       |Comments                                |
+|--------------------|-------------------------|------------------------------|----------------------------------------|
+|%b                  |127                      |`1111111`                     |Base 2                                  |
+|%q                  |127                      |`'\u007f'`                    |Singly quoted character literal         |
+
+### Slices
+
+|Format              |Values                   |Display                       |Comments                                |
+|--------------------|-------------------------|------------------------------|----------------------------------------|
+|%p                  |["Hello" "World"]        |`0xc0000c4020`                |Address of the first element in a slice |
+
