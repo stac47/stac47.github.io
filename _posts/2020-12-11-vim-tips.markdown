@@ -36,3 +36,13 @@ So to insert the current date in the default format:
 ```
 :pu=strftime('%c')
 ```
+## Update Plugin Help Tags
+
+Sometimes it can occur that some plugin's help is not available. If the plugins
+you use are installed via the Vim 8's plugins manager, you can simply use the
+following command to regenerate all the help tags of all the installed plugins
+```
+:helptags ALL
+```
+
+More info there: `:h helptags`
