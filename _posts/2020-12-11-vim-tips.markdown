@@ -46,3 +46,19 @@ following command to regenerate all the help tags of all the installed plugins
 ```
 
 More info there: `:h helptags`
+
+## Clearing the Search Pattern
+
+When search highlighting is enabled, you might want to clear the highlighted
+patterns. One solution could be to disable the highlighting with the command
+`:noh`. This can be cumbersome because you will need to enable it again on your
+next search.
+
+A better way is probably to clear the last search pattern register as shown
+below:
+
+```
+:let @/=""
+```
+
+More info there: `:h noh` and `:h registers`
