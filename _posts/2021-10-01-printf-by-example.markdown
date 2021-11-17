@@ -97,6 +97,7 @@ Complete documentation: `go doc fmt`
 |Format              |Values                   |Display                       |Comments                                |
 |--------------------|-------------------------|------------------------------|----------------------------------------|
 |%q                  |"Hello World!"           |`"Hello World!"`              |Quoted strings                          |
+|% x                 |"\xde\xad\xbe\xbe"       |`de ad be ef`                 |Spaced hexadecimal                      |
 
 ### Booleans
 
