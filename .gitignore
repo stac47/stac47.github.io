@@ -2,3 +2,5 @@ _site/
 .jekyll-metadata
 
 .jekyll-cache/
+.rbenv-gemsets
+.ruby-version
