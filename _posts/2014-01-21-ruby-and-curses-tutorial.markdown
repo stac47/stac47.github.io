@@ -42,15 +42,17 @@ Why would you want to use this today when we can manipulate a computer with a
 high definition 3D graphical interface ? There could be many reasons for this:
 
 - Some people works in terminal using [Tmux][6] or Screen and they generally
-appreciate having a simple terminal interface which integrate well in their
-shell panels.
+  appreciate having a simple terminal interface which integrate well in their
+  shell panels.
 - You need to provide a tool working on a minimal system (for instance, an OS
-installer)
+  installer)
 
 Ruby provided a binding module included in the standard library until Ruby 2.0.
 To use it from Ruby 2.1 and more, you will have to install this as a gem:
 
-    $ gem install curses
+```shell
+gem install curses
+```
 
 This done, we are ready to start the curse tutorial.
 
@@ -67,7 +69,7 @@ gather information about your terminal and save the current modes (see
 `Curses.def_prog_mode`). You will be able to access these data as
 it is shown in the following example:
 
-{% highlight ruby %}
+```ruby
 require 'curses'
 
 Curses.init_screen
@@ -80,7 +82,7 @@ end
 
 puts "Number of rows: #{nb_lines}"
 puts "Number of columns: #{nb_cols}"
-{% endhighlight %}
+```
 
 To use the *curses* library in a program you need to load it thanks to the
 **require** statement which gives you access to the Curses module. The
@@ -94,7 +96,7 @@ terminal if an error occurs.
 Notice that we could have included the Curses module to avoid repeating the
 Curses namespace all along the program.
 
-{% highlight ruby %}
+```ruby
 require 'curses'
 include Curses
 init_screen
@@ -104,7 +106,7 @@ begin
 ensure
   close_screen
 end
-{% endhighlight %}
+```
 
 After initialization, you can set several options. Generally, you don't want to
 display the keys that are pressed by the user when they are caught by the
@@ -120,7 +122,7 @@ aliases `Curses.crmode` and `Curses.nocrmode`. If you want disable the
 interpretation of the interrupt, quit or suspend characters, you can enter the
 **raw** mode thanks to `Curses.raw` and exit this mode with `Curses.noraw`.
 
-Pressing <Return> key results normally in a new line. This behaviour can be
+Pressing *Return* key results normally in a new line. This behaviour can be
 deactivated with `Curses.nonl` function and `Curses.nl` will restore the
 default behaviour.
 
@@ -159,9 +161,9 @@ Defining color attributes is done with the `Curses.init_pair(pair, fg, bg)`. A
 pair for colors are associated to an id. For instance, if you want to use red
 color to write on a blue background, you can define a key pair as shown below:
 
-{% highlight ruby %}
+```ruby
 Curses.init_pair(1, Curses::COLOR_RED, Curses::COLOR_BLUE)
-{% endhighlight %}
+```
 
 To turn this pair into an attribute, you have to use the
 `Curses.color_pair(pair)` function.
@@ -170,10 +172,10 @@ Now, previously described attributes can be OR'ed to be used altogether and
 passed to the `Curses.attrset(attr)`. In the following code snippet, "Hello
 World" will blink on the screen written in red on a blue background.
 
-{% highlight ruby %}
+```ruby
 Curses.attrset(Curses.color_pair(1) | Curses::A_BLINK)
 Curses.addstr("Hello World")
-{% endhighlight %}
+```
 
 # Using windows
 
@@ -182,7 +184,7 @@ Using the functions exposed by the *Curses* module will implicitly work on the
 you want thanks to the `Curses.setpos` function. Be careful: the position is
 defined by a couple (line, columns) with origin at the top-left corner.
 
-{% highlight ruby %}
+```ruby
 require 'curses'
 
 Curses.init_screen
@@ -196,7 +198,7 @@ begin
 ensure
   Curses.close_screen
 end
-{% endhighlight %}
+```
 
 Generally, you will want to create several windows on the screen or access the
 *stdscr* in a more object oriented fashion. This is the purpose of the
@@ -210,7 +212,7 @@ methods defined on `Window` object.
 
 The previous example could be rewritten as follows:
 
-{% highlight ruby %}
+```ruby
 require 'curses'
 
 Curses.init_screen
@@ -225,7 +227,7 @@ begin
 ensure
   Curses.close_screen
 end
-{% endhighlight %}
+```
 
 But windows become an interesting feature when you need to manage several parts
 of the screen with different refresh cycles. Curses was created in the old ages
@@ -240,23 +242,23 @@ methods on this object that need to be understood for the next example:
 
 - `maxx` and `maxy` returns the maximum coordinates reachable in a window.
 - `box(vert, hor)` will surround the windows with the *vert* and *hor*
-characters.
+  characters.
 - `setpos(y, x)` will move the cursor at position (y, x) relatively to the
-current window origin.
+  current window origin.
 - `addstr(str)` or `<<(str)` alias will display the *str* text at the current
-cursor position.
+  cursor position.
 - `refresh` will redraw your window. It is an important method; windows are not
-updated as soon as they are modified but have to be manually refreshed. This
-way, you can make several modifications and wait to have the screen in an
-expected state to publish the new screen. This was of course very relevant on
-old terminals.
+  updated as soon as they are modified but have to be manually refreshed. This
+  way, you can make several modifications and wait to have the screen in an
+  expected state to publish the new screen. This was of course very relevant on
+  old terminals.
 - `clear` will erase the window. Note that you will have to call the `refresh`
-method to see a change.
+  method to see a change.
 - `close` will free the memory dedicated to the current window object. Trying
-to display something in this window will lead to a `RuntimeError`. This method
-do not clear the window.
+  to display something in this window will lead to a `RuntimeError`. This method
+  do not clear the window.
 
-{% highlight ruby %}
+```ruby
 require 'curses'
 
 Curses.init_screen
@@ -271,7 +273,7 @@ begin
   win1.refresh
 
   # In this window, there will be an animation
-  win2 = Curses::Window.new(Curses.lines / 2 - 1, Curses.cols / 2 - 1, 
+  win2 = Curses::Window.new(Curses.lines / 2 - 1, Curses.cols / 2 - 1,
                             Curses.lines / 2, Curses.cols / 2)
   win2.box("|", "-")
   win2.refresh
@@ -279,11 +281,11 @@ begin
     win2.setpos(win2.maxy / 2, i)
     win2 << "*"
     win2.refresh
-    sleep 0.05 
+    sleep 0.05
   end
 
   # Clearing windows each in turn
-  sleep 0.5 
+  sleep 0.5
   win1.clear
   win1.refresh
   win1.close
@@ -295,7 +297,7 @@ begin
 rescue => ex
   Curses.close_screen
 end
-{% endhighlight %}
+```
 
 # Managing keyboard input
 
@@ -318,7 +320,7 @@ passed to this method, when the left key is pressed, the `getch` method will
 return `Curses::Key::LEFT`. All the keys are mapped inside the `Curses:Key`
 module. The following example shows this in action:
 
-{% highlight ruby %}
+```ruby
 input = win.getch
 if input == Curses::Key::LEFT then
     win.addstr("Left key")
@@ -326,7 +328,7 @@ else
     win.addstr("Other key")
 end
 win.refresh
-{% endhighlight %}
+```
 
 There is another method dedicated to capturing the user input:
 `Windows.getstr`. This method is probably less useful than `Window.getch` but
@@ -341,12 +343,12 @@ on which you call the method takes the focus. This means overlapping windows
 will put in the background. Let's have a look at what happens when you draw
 some windows and call `Curses.getch`.
 
-{% highlight ruby %}
-  win1 = Curses::Window.new(10, 20, 0, 0)
-  win1.box("|", "-")
-  win1.refresh
-  input = Curses.getstr
-{% endhighlight %}
+```ruby
+win1 = Curses::Window.new(10, 20, 0, 0)
+win1.box("|", "-")
+win1.refresh
+input = Curses.getstr
+```
 
 The window 'win1' will quickly appear and fade out because the **stdscr** will
 gain the focus and we can say it will come upfront hiding as a metter of fact
@@ -356,18 +358,18 @@ A solution to this is to create subwindows of the *stdscr* windows. *stdscr*
 can then be considered as a container. Creating a subwindows is done with the
 `Window.subwin(height, width, top, left)`.
 
-{% highlight ruby %}
+```ruby
   win1 = Curses.stdscr.subwin(10, 20, 0, 0)
   win1.box("|", "-")
   win1.refresh
   input = Curses.getstr
-{% endhighlight %}
+```
 
 # More information about Curses
 
 - Of course the best documentation is inside the manual pages: `$ man ncurses`.
 - <http://tldp.org/HOWTO/NCURSES-Programming-HOWTO/> is a good documentation
-about the C API which goes deeper than this one.
+  about the C API which goes deeper than this one.
 
 # A last word
 
