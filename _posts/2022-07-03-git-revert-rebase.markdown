@@ -1,7 +1,7 @@
 ---
 title:  "Git: Revert & Rebase"
 layout: post
-categories: git
+tags: git
 ---
 
 # {{ page.title }}

@@ -1,9 +1,10 @@
 ---
 layout: post
 title:  "CTRL-V in Vim"
-date:   2020-01-03 00:00:01
-categories: vim
+tags: vim
 ---
+
+# {{ page.title }}
 
 This year starts well with this small discovery of the CTRL-V keystroke in
 __Vim__ insert mode. In fact, I did not need this before but as I had to learn

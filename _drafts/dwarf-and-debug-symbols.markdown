@@ -1,9 +1,10 @@
 ---
 layout: post
 title:  "DWARF Debug Symbols"
-date:   2019-03-17 02:47:27
-categories: c elf tutorial
+tags: c elf tutorial
 ---
+
+# {{ page.title }}
 
 I never had to dig into DWARF (which [backronym][wikipedia_backronym] stands
 for "Debugging With Attributed Record Formats"): as long as `gdb` is working
@@ -23,7 +24,7 @@ code of eu-readelf gives instructions on how to use libwd.
 I will try to put in words what I learnt, for me to help my poor memory and for
 anyone who needs a quick introduction.
 
-# A Few Words On ELF Before Talking About DWARF
+## A Few Words On ELF Before Talking About DWARF
 
 The Executable and Linkable Format (ELF) is a file format designed to store
 information to build executable binaries and to run such binaries.
@@ -134,9 +135,9 @@ program headers table and as it will be used during program link step, the
 section headers table is mandatory.  Finally, a program binary will need a
 program headers table and the section headers table is optional.
 
-# The DWARF Format
+## The DWARF Format
 
-## Introduction
+### Introduction
 
 The DWARF format ("Debugging With Attributed Record Formats") was designed to
 describe the source code of a program to be used by debuggers. But it can also
@@ -156,7 +157,7 @@ debugging information. GCC supports several types of debugging formats:
   version 5 is experimental.
 * *stabs*, *stabs+*, *xcoff*, *xcoff+*: other formats for other specific platforms.
 
-## How to describe the Source Code
+### How to describe the Source Code
 
 As would any compiler do, the source code is first parsed to build a
 representation of it as a tree. This tree is stored in a dedicated ELF section
@@ -265,7 +266,7 @@ The next expected value is the language which is stored on 1 byte
 Then the next string is at the offset `0x54` in `.debug_str` which corresponds
 to "test_0.cpp".
 
-## Siblings and Children
+### Siblings and Children
 
 As said at the beginning, the debug information are stored in DWARF as a tree.
 This tree is flatten in the file: this means the tree structure can be read
@@ -330,7 +331,7 @@ RF section [24] '.debug_info' at offset 0x306c:
              name                 (strp) "unsigned int"
 ```
 
-## Other Debug Sections
+### Other Debug Sections
 
 So far, we mainly talked about the `.debug_info` section and its links with
 `.debug_str` and `.debug_abbrev`.
@@ -344,9 +345,9 @@ sections like `.debug_aranges` (fast access by address - see Section
 [6.1.2][dwarfstd]), `.debug_pubnames` and `.debug_pubtypes` (fast access by
 name/type - see [Section 6.1.1][dwarfstd])...
 
-# Using elfutils/libdw
+## Using elfutils/libdw
 
-## Available Libraries
+### Available Libraries
 
 There are several ways to parse DWARF data from a file.  Generally, DWARF
 information is embedded in a section of an ELF formatted file.  To manipulate
@@ -362,7 +363,7 @@ ELF file.
 
 We will only speak about the **libdw** library.
 
-## An Example of libdw Usage
+### An Example of libdw Usage
 
 The best to learn how to use the library is probably reading the code from the
 programs provided by the elfutils. For example:
@@ -471,7 +472,7 @@ an offset in the `.debug_str` section (DW_FORM_strp). The function
 The end of this code is not really interesting and deals with releasing
 allocated resources.
 
-# Going Further
+## Going Further
 
 Debuggers generally provide a way to navigate across the frames of the call
 stack. When a routine calls another routine, the compiler generates some code
@@ -496,13 +497,13 @@ that if your program is compiled with GCC, the section name will be
 `.eh_frame` to emphase that this section is not only used for debugging purpose
 but also during the "exception handling".
 
-## Other Sections Using DWARF
+### Other Sections Using DWARF
 
 TODO: talk about operators
 
-## Embedding Malicious Code
+### Embedding Malicious Code
 
-# References
+## References
 
 * The [ELF specification](http://www.sco.com/developers/gabi/latest/contents.html)
 * The [DWARF specification][dwarfstd]

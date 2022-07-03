@@ -1,9 +1,10 @@
 ---
 layout: post
 title:  "Understanding Symbols Relocation"
-date:   2018-03-01 15:28:07
-categories: c relocation elf tutorial
+tags: c relocation elf tutorial
 ---
+
+# {{ page.title }}
 
 Relocation of symbols is conceptually a simple operation: when compiling/running a
 program, the references to symbols has to be replaced by their real location in
@@ -22,7 +23,7 @@ The [dynamic linker](https://en.wikipedia.org/wiki/Dynamic_linker) is a piece
 of code that is executed alongside an executable to resolve the dynamic symbols
 at runtime.
 
-# Simple Case: Static Linkage
+## Simple Case: Static Linkage
 
 Let's start with the simplest case: we will statically link an executable.
 
@@ -232,9 +233,9 @@ statically linked, the linker will consider it will have to do the same job as
 if the relocation type was `R_X86_64_PC32` relocation (as written in the gold
 linker in _x86_64.cc:3637_).
 
-# Relocation when using Dynamic Libraries
+## Relocation when using Dynamic Libraries
 
-## Quick Introduction
+### Quick Introduction
 
 When statically linking an executable, all the external functions the program
 relies on are stored in the final file. In fact, the link editor will
@@ -289,7 +290,7 @@ $hexdump -C prog1_dynamic.out
 When running this executable, the `/lib64/ld-linux-x86-64.so.2` will somehow
 have to start and handle the undefined symbols.
 
-## Position Independent Code
+### Position Independent Code
 
 When we think about it, the job of the dynamic linker could be simple. Based on
 PC-Relative relocations inserted by the link-editor, it could put the real
@@ -357,7 +358,7 @@ using the `-fPIC` option as shown in the following example:
 > gcc -shared -o libnothing.so nothing_pic.o
 ```
 
-## Calling a Shared Library Function
+### Calling a Shared Library Function
 
 In the previous example, there was a PC-relative relocation for the symbol
 `doAlmostNothing`. This was possible because the linker knew where the function
@@ -506,7 +507,7 @@ $ cat /proc/<pid>/map
 [...]
 ```
 
-## Variable Symbol Relocations
+### Variable Symbol Relocations
 
 So far, we only saw how function symbols were being relocated. What if a shared
 library exposes a global variable, that can be used at the same time locally by
@@ -584,7 +585,7 @@ address is used:
 ```
 
 
-# Conclusion
+## Conclusion
 
 After this exercise, I have a clearer idea of the linkers job and how the
 relocations are handled. There are so much thing to dig into like the
@@ -592,7 +593,7 @@ visibility of symbols, the way thread local storage is handled, the versioning
 of symbols. I will stop here. If a reader find an error, he can submit a Pull
 Request.
 
-# References
+## References
 
 *   The bright series of post by the author of the
     [gold](https://en.wikipedia.org/wiki/Gold_(linker)) about linkers

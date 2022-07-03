@@ -1,9 +1,10 @@
 ---
 layout: post
 title:  "Debian SID in Virtualbox"
-date:   2018-01-18 15:28:07
-categories: linux debian virtualbox
+tags: linux debian virtualbox
 ---
+
+# {{ page.title }}
 
 I daily use a __Debian SID__ (Still In Development) in a __Virtualbox__ hosted
 on a __MS-Windows__ system. As this version of GNU/Linux is updated almost every

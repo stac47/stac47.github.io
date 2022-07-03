@@ -1,9 +1,10 @@
 ---
 layout: post
 title: "Vim: Massive Substitute"
-date: 2017-12-17 15:28:07
-categories: vim tips
+tags: vim tips
 ---
+
+# {{ page.title }}
 
 In one of my previous post about "Advanced Cheat Sheet", I wrote at the end how
 to make a change in a set of files using the args list (`:h args`):

@@ -1,14 +1,15 @@
 ---
 layout: post
 title:  "C++11 & Performances"
-date:   2017-11-21 15:28:07
-categories: C++ Performances
+tags: C++ Performances
 ---
+
+# {{ page.title }}
 
 A few notes I took from a lecture I attended a few days ago. I found some parts
 very interesting, whereas basic. I share this in case some would be interested.
 
-# Memory Proximity
+## Memory Proximity
 
 Modern architecture generally have several levels of cache between the CPU and RAM.
 On the current computer I am working on, there are 3 levels of cache as we can
@@ -205,7 +206,7 @@ We can see that we are able to pack 8 integers and to add them 8 by 8 thanks to
 the MMX registers. As a matter of fact the number of operations to sum all the
 ages is devided by 8.
 
-# Inlining and C++
+## Inlining and C++
 
 Inlining is the decision taken by the compiler not to do a real call to a
 function, but directly write the assembler code of the function at the point it
@@ -387,7 +388,7 @@ As a side note, gcc is smart enought to suggest where you should add the final
 keyword when the warning options `-Wsuggest-final-types` and
 `-Wsuggest-final-methods` are provided.
 
-# R-value References & Move Semantic
+## R-value References & Move Semantic
 
 From the start, C++ used to copy objects by default. But a copies take
 resources and time. So a smart way to cope such copies was to use reference for
@@ -494,7 +495,7 @@ stac@debian:~/development/cpp-sandbox/vector>time ./a.out
 ./a.out  0.05s user 0.10s system 97% cpu 0.149 total
 ```
 
-# STL Containers
+## STL Containers
 
 Choosing a container depends upon how you will use it, so it is worth knowing
 about their internal structure and the complexity of the methods/functions you
@@ -524,9 +525,9 @@ sorted, `std::lower_bound` is the best alternative to `std::find` algorithm.
 Last but not least, it really seems that `std::list` due to its poor
 performances, must not be the first container choice.
 
-# Strings
+## Strings
 
-## New ABI
+### New ABI
 
 Strings is one of the most common objects used in programs. Its definition has
 changed between C++98 and C++11.
@@ -546,7 +547,7 @@ contains less than 16 bytes, there is no heap memory allocation (the small
 buffer is store in place of the pointer to the location of the `char[]` on the
 heap.
 
-## C++17 std::string_view
+### C++17 std::string_view
 
 There is a new interesting structure coming with C++17: `std::string_view`.
 Often, you have a `char[]` allocated on heap and filled with some data.

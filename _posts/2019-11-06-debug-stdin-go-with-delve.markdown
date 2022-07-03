@@ -1,9 +1,10 @@
 ---
 layout: post
 title:  "Debugging a Go Program That Read From Stdin With Delve"
-date:   2019-11-06 15:28:07
-categories: go delve debug
+tags: go delve debug
 ---
+
+# {{ page.title }}
 
 Sometimes you have some programs that read their input from the standard input.
 Generally a convenient way to pass the inputs is to pipe to the program like

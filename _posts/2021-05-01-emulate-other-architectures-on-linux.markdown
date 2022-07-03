@@ -1,9 +1,10 @@
 ---
 layout: post
 title:  "Emulate other Architectures on a Linux System"
-date:   Mon 01 Mar 2021 09:13:13 AM UTC
-categories: vim docker oci
+tags: docker oci
 ---
+
+# {{ page.title }}
 
 Sometimes we have to port some programs to other architectures they were
 designed for. If the project was written in Java or in a script language

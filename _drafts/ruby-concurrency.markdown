@@ -1,11 +1,10 @@
 ---
 title:  "Concurrency with Ruby Fiber"
 layout: post
-date:   2022-06-06
-categories: ruby concurrency fiber
+tags: ruby concurrency fiber
 ---
 
-# Ruby and Concurrency
+# {{page.title }}
 
 I discovered Ruby in 2014 and, at that time, found it a very elegant language.
 Unfortunately, I could not explore all I wanted at that time. It happens that I

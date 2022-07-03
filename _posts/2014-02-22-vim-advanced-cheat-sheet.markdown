@@ -1,11 +1,10 @@
 ---
 layout: post
 title:  "Vim: Advanced Cheat Sheet"
-date:   2014-02-22 15:28:07
-categories: vim cheat sheet
+tags: vim cheat sheet
 ---
 
-# Vim: Advanced Cheat Sheet
+# {{ page.title }}
 
 ## Moving in a Document from Normal Mode
 

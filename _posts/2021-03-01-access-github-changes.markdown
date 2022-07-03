@@ -1,9 +1,10 @@
 ---
 layout: post
 title:  "Accessing Github After Deprecation of Password Authentication"
-date:   Mon 01 Mar 2021 09:13:13 AM UTC
-categories: vim
+tags: vim
 ---
+
+# {{ page.title }}
 
 On December 2020, Github [announced][github_announce]:
 > Beginning August 13, 2021, we will no longer accept account passwords when

@@ -1,9 +1,10 @@
 ---
 layout: post
 title:  "Ruby Curses Tutorial"
-date:   2014-01-21 15:28:07
-categories: ruby curses tutorial
+tags: ruby curses tutorial
 ---
+
+# {{ page.title }}
 
 Some times ago, I started playing with Ruby after several years coding in Java
 and Python and I must admit that I really appreciated the elegance of the
@@ -29,7 +30,7 @@ level of tutorial for curses as it is in [Python documentation][5]. I don't
 think that a Rubyist should look at the original C documentation of *curses* to
 start with curses ruby binding.
 
-# Curses and Ruby
+## Curses and Ruby
 
 Basically, curses is an old library distributed on many Unix distribution whose
 goal was to manipulate a terminal screen to draw windows, to display some text
@@ -56,7 +57,7 @@ gem install curses
 
 This done, we are ready to start the curse tutorial.
 
-# Vocabulary and Initialization
+## Vocabulary and Initialization
 
 A **window** is a regular area on your terminal screen. It can be either the
 whole screen or a smaller part of the screen. You can create as many windows as
@@ -130,7 +131,7 @@ Another interesting thing is to control the visibility of the cursor with the
 `Curses.curs_set(visibility)` function where *visibility*  can take 0
 (invisible), 1 (visible) or 2 (very visible).
 
-# Colors initialization
+## Colors initialization
 
 Today, many terminals applications can display colors. If you want to use this
 facility, you must call the `Curses.start_color` just after the call to
@@ -177,7 +178,7 @@ Curses.attrset(Curses.color_pair(1) | Curses::A_BLINK)
 Curses.addstr("Hello World")
 ```
 
-# Using windows
+## Using windows
 
 Using the functions exposed by the *Curses* module will implicitly work on the
 *stdscr*. You can move the cursor on this screen and display a message wherever
@@ -299,7 +300,7 @@ rescue => ex
 end
 ```
 
-# Managing keyboard input
+## Managing keyboard input
 
 Basically, a user will interact with the terminal thanks to his keyboard and
 this is what this chapter will deal with. We won't talk about the ability to
@@ -365,13 +366,13 @@ can then be considered as a container. Creating a subwindows is done with the
   input = Curses.getstr
 ```
 
-# More information about Curses
+## More information about Curses
 
 - Of course the best documentation is inside the manual pages: `$ man ncurses`.
 - <http://tldp.org/HOWTO/NCURSES-Programming-HOWTO/> is a good documentation
   about the C API which goes deeper than this one.
 
-# A last word
+## A last word
 
 I hope this is a good start point Curses Ruby API and this will be useful.
 

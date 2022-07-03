@@ -1,9 +1,10 @@
 ---
 layout: post
 title:  "Vim Tips"
-date:   2020-12-11 00:00:01
-categories: vim
+tags: vim
 ---
+
+# {{ page.title }}
 
 This post evolves each time I discover an exciting feature of Vim.
 

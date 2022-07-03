@@ -1,12 +1,10 @@
 ---
 layout: post
-title:  "printf by example"
-date:   2021-09-06
-categories: C cheatsheet
+title:  "`printf` by example"
+tags: C cheatsheet
 ---
 
-
-# `printf` By Example
+# {{ page.title }}
 
 C'`stdio.h` provides a set of function to print values on the screen following
 a provided format: `printf`, `sprintf`, `fprintf`, `dprintf`, `snprintf` and
