@@ -38,8 +38,8 @@ git rebase --onto main fc106f3 topic
 ```
 
 What this command says: "From the tip of the branch `topic` rewind to the
-common ancestor commit `fc106f3` and re-apply those commit on top of the `main`
-branch".
+common ancestor (commit `fc106f3`) and re-apply those commit on top of the
+`main` branch".
 
 As a result, the resulting graph will be:
 
@@ -54,7 +54,7 @@ As a result, the resulting graph will be:
 * 71eb869 m1
 ```
 
-We can see what git did behinf the scene:
+We can see what git did behind the scene:
 
 ```sh
 % git reflog
@@ -65,7 +65,7 @@ We can see what git did behinf the scene:
 73f06e9 (main) HEAD@{4}: checkout: moving from topic to main
 ```
 
-Starting from `main`, the commits whose message are "m4' and "m5" are applied
+Starting from `main`, the commits whose messages are "m4' and "m5" are applied
 successively on top of main.
 
 Of course the command for such a simple rebase is a bit too verbose and git has
@@ -92,7 +92,7 @@ A classic scenario in which you will want to use `revert`, is when you merged a
 topic branch on the `main` one and you are reported with some bugs and as it
 would be too long to correctly fix them, you decide to revert your changes.
 
-So once again, starting from that state:
+So once again, starting from the following state:
 
 ```sh
 % git log --pretty=oneline --graph --decorate --branches --remotes --tags --abbrev-commit
@@ -107,7 +107,7 @@ So once again, starting from that state:
 ```
 
 We merge and we also add a new commit on top of `main` because before you
-discovered you introduced a bug, someone also pushed a commit (or marged
+discovered you introduced a bug, someone also pushed a commit (or merged
 another topic branch).
 
 ```sh
@@ -155,8 +155,8 @@ Now you may want to take you local `topic` branch and fix the bug before
 merging again. But, you want to restart working on that branch with the latest
 commits that were applied on `main`. So you tell yourself, let's rebase.
 
-But something strange occured: you lost all your changes. Actually, it is like
-a fast-forward occured:
+But something strange occurred: you lost all your changes. Actually, it is like
+a fast-forward occurred:
 
 ```sh
 % git checkout topic
@@ -235,7 +235,7 @@ d0ec91a HEAD@{4}: checkout: moving from main to topic
 ```
 
 To move back to the state before the rebase, you can move HEAD to where it was
-prior ro the rebase: in this case, you can reset to `HEAD@{4}` using the
+prior to the rebase: in this case, you can reset to `HEAD@{4}` using the
 `--hard` option to have a clean worktree.
 
 ```sh
