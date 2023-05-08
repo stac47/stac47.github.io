@@ -63,3 +63,24 @@ below:
 ```
 
 More info there: `:h noh` and `:h registers`
+
+## My Vim configure options
+
+My options for the vim build I use everyday (here for MacOS, to be adapted for
+other environments):
+
+```
+./configure --prefix="$HOME/.local" \
+            --enable-multibyte \
+            --with-tlib=ncurses \
+            --with-compiledby=stac47 \
+            --enable-cscope \
+            --enable-terminal \
+            --enable-perlinterp \
+            --enable-rubyinterp \
+            --enable-python3interp \
+            --disable-gui \
+            --without-x \
+            --enable-luainterp \
+            --with-lua-prefix=$(brew --prefix lua)
+```
