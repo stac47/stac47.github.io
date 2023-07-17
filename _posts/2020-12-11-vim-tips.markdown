@@ -84,3 +84,35 @@ other environments):
             --enable-luainterp \
             --with-lua-prefix=$(brew --prefix lua)
 ```
+
+## Opening Files From A Generated Files List
+
+Sometime, we may want to start vim and open the set of files you were working
+on, let's say a subset of the files in the previous git commit.
+
+That's sound easy, but there's a tiny trick to be aware of.
+
+If you run the following command:
+
+```
+% git diff --name-only HEAD~1 | grep '.rb$' | xargs vim --
+```
+
+You will see the following warning (and maybe, it will break your terminal
+display and you will have to use `reset` or `stty sane` to fix it).
+
+> Vim: Warning: Input is not from a terminal
+
+The reason is that vim expects to be started from a terminal: here vim is a
+child process created by `xargs`. But there is an option with the `xargs`
+command as described in the manpage:
+
+> -o      Reopen stdin as /dev/tty in the child process before executing the
+>         command.  This is useful if you want xargs to run an
+>         interactive application.
+
+So the right command is:
+
+```
+% git diff --name-only HEAD~1 | grep '.rb$' | xargs -o vim --
+```
