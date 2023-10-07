@@ -70,19 +70,21 @@ My options for the vim build I use everyday (here for MacOS, to be adapted for
 other environments):
 
 ```
-./configure --prefix="$HOME/.local" \
-            --enable-multibyte \
-            --with-tlib=ncurses \
-            --with-compiledby=stac47 \
-            --enable-cscope \
-            --enable-terminal \
-            --enable-perlinterp \
-            --enable-rubyinterp \
-            --enable-python3interp \
-            --disable-gui \
-            --without-x \
-            --enable-luainterp \
-            --with-lua-prefix=$(brew --prefix lua)
+% ./configure --prefix="$HOME/.local" \
+              --enable-multibyte \
+              --with-tlib=ncurses \
+              --with-compiledby=stac47 \
+              --enable-cscope \
+              --enable-terminal \
+              --disable-perlinterp \
+              --disable-rubyinterp \
+              --disable-python3interp \
+              --disable-gui \
+              --without-x \
+              --disable-luainterp \
+              --disable-gtktest \
+              --disable-netbeans \
+              --enable-fail-if-missing
 ```
 
 ## Opening Files From A Generated Files List
