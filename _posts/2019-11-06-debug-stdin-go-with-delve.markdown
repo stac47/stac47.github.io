@@ -10,7 +10,7 @@ Sometimes you have some programs that read their input from the standard input.
 Generally a convenient way to pass the inputs is to pipe to the program like
 this:
 
-```console
+```
 > cat testcase.txt | go run myprogram.go
 ```
 
@@ -20,7 +20,7 @@ world.
 
 With GDB, the only thing to do was:
 
-```console
+```
 > gdb myprogram
 gdb> run < input.txt
 ...
@@ -35,7 +35,7 @@ The workaround we have right now is the following:
 On one terminal (terminal 1), you run delve as a debugging server with the
 `--headless` option.
 
-```console
+```
 > dlv debug --headless --listen :4747 myprogram.go
 API server listening at: [::]:4747
 ```
@@ -43,7 +43,7 @@ API server listening at: [::]:4747
 On another terminal (terminal 2), you connect this debugging server and
 continue the execution until the blocking call to read the input stream:
 
-```console
+```
 > dlv connect :4747
 Type 'help' for list of commands.
 (dlv) c
@@ -58,7 +58,7 @@ This is a first step that can be useful when the data to paste is not very big.
 The first solution that comes in out mind would have been to restart the
 debugged program the foolwing way:
 
-```console
+```
 (dlv) r < input.txt
 ```
 
@@ -76,33 +76,33 @@ session.
 So first, let's compile the program as follows to disable any optimizations and
 inlining:
 
-```console
+```
 > go build -gcflags="-N -l"
 ```
 
 Create a named pipe make it alive forever:
 
-```console
+```
 > mkfifo myfifo
 > sleep infinity > myfifo
 ```
 
 Run your program so that the read will block:
 
-```console
+```
 > ./myprogram < myfifo
 ```
 
 Attach the debugger:
 
-```console
+```
 > dlv attach $(pgrep -fn myprogram)
 ```
 
 At that point, you can put your breakpoints. Then you are ready to inject the
 data:
 
-```console
+```
 > cat input.txt > myfifo
 ```
 
@@ -110,6 +110,6 @@ Be careful: perhaps the Linux kernel will forbid you from attaching the
 debugger to the process to be debugged. You can, as root, disable this
 security:
 
-```console
+```
 $ echo 0 > /proc/sys/kernel/yama/ptrace_scope
 ```

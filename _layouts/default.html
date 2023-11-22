@@ -6,26 +6,29 @@
         <title>{{ page.title }}</title>
         <meta name="viewport" content="width=device-width">
 
-        <!-- Bootstrap -->
-        <link rel="stylesheet" href="/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://cdn.simplecss.org/simple.min.css">
 
         <!-- syntax highlighting CSS -->
-        <link rel="stylesheet" href="/css/github.css">
+        <link rel="stylesheet" href="/css/dracula.css">
 
         <!-- Custom CSS -->
-        <link rel="stylesheet" href="/css/main.css">
+        <link rel="stylesheet" href="/css/custom.css">
 
     </head>
     <body>
-    
+      <header>
+        <nav>
+          <a href="/index.html">Home</a>
+          <a href="/about.html">About me</a>
+        </nav>
+        <h1>Useless Blog</h1>
+        <p>...or things I write down before I forget them</p>
+      </header>
+
       {{ content }}
+      <footer>
 
-
-      <!-- Bootstrap core JavaScript
-      ================================================== -->
-      <!-- Placed at the end of the document so the pages load faster -->
-      <script src="/js/jquery-3.1.1.min.js"></script>
-      <script src="/js/bootstrap.min.js"></script>
-
+        Copyright © 2023 Laurent Stacul
+      </footer>
     </body>
 </html>

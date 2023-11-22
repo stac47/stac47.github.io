@@ -64,7 +64,7 @@ effective address.
 
 We disassemble the `nothing.o`:
 
-```console
+```
 > objdump -d nothing.o
 
 nothing.o:     file format elf64-x86-64
@@ -120,7 +120,7 @@ file. The compiler will put some information in ELF sections that are dedicated
 to the relocations: depending on the targeted architecture, the involved
 section are `.rel.text` (x86_32) or `.rela.text` (x86_64).
 
-```console
+```
 > readelf -r nothing.o
 
 Relocation section '.rela.text' at offset 0x250 contains 1 entries:
@@ -209,7 +209,7 @@ There are a few interesting things to say about the `main` function. The linker
 also operated a relocation to the `doAlmostNothing` function. Let us see the
 relocation information from the object file containing the main function:
 
-```console
+```
 > readelf -s --wide prog0.o | grep doAlmostNothing
     10: 0000000000000000     0 NOTYPE  GLOBAL DEFAULT  UND doAlmostNothing
 
@@ -265,7 +265,7 @@ the __glibc__. An executable that depends upon shared libraries, holds a referen
 to the path toward the dynamic linker to use. This path is stored in the
 `.interp` section of the executable:
 
-```console
+```
 > readelf -S prog1_dynamic.out
 
 There are 31 section headers, starting at offset 0x1a80:
@@ -310,7 +310,7 @@ As usual in computer sciences, the solution consists in adding an indirection
 layer. This indirection will be performed by the Global Offset Table (GOT) and
 the Procedure Linkage Table (PLT).
 
-```console
+```
 > readelf --segments prog0_dynamic.out
 
 Elf file type is DYN (Shared object file)
@@ -353,7 +353,7 @@ Hence, when compiling some code to be embedded in shared library, we must
 require the compiler to generate _Position Independent Code_. This can be done
 using the `-fPIC` option as shown in the following example:
 
-```console
+```
 > gcc -Wall -g -O0 -fPIC -c nothing.c -onothing_pic.o
 > gcc -shared -o libnothing.so nothing_pic.o
 ```
@@ -373,7 +373,7 @@ work under the hood ?
 Comparing the dynamic and the static version shows a difference in the way the
 `doAlmostNothing` is called.
 
-```console
+```
 > objdump -d -s prog0.out
 [...]
 674:   e8 15 00 00 00          callq  68e <doAlmostNothing>
@@ -428,7 +428,7 @@ The linker can see that a call to `doAlmostNothing` will have to be performed
     gives an address in the PLT where the effective address of the function
     will have to be set.
 
-```console
+```
 > readelf -r prog0_dynamic
 Relocation section '.rela.plt' at offset 0x5f0 contains 1 entries:
   Offset          Info           Type           Sym. Value    Sym. Name + Addend
@@ -500,7 +500,7 @@ And this time, the value at 0x555555755018 is now the effective address of the
 `doAlmostNothing` function. We can verify that this address points to the
 executable memory space of shared library `libnothing`:
 
-```console
+```
 $ cat /proc/<pid>/map
 [...]
 7ffff7ff2000-7ffff7ff3000 r-xp 00000000 08:01 389081    <path>/libnothing.so
@@ -519,7 +519,7 @@ We can imagine a shared library that defines a string `kExternString` and also
 a function `printExternalString` that prints that variable out. An executable
 call this method and also directly print the variable.
 
-```console
+```
 > readelf -r libprinter.so.1
 
 Relocation section '.rela.dyn' at offset 0x520 contains 11 entries:
@@ -553,7 +553,7 @@ The dynamic linker knows where the `kExternString` is located: it is calculated
 from the load address of the shared library + the value of the symbol (taken
 from the dynamic symbols table `.dynsym`). In our case:
 
-```console
+```
 > readelf --symbols libprinter.so
 
 Symbol table '.dynsym' contains 17 entries:
