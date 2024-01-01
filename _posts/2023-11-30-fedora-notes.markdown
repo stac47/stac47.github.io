@@ -44,6 +44,31 @@ Next, to make this persistent, I regenerated the `initramfs` using `dracut`:
 % sudo dracut --force
 ```
 
+### Fix NVidia Blurry Display on Wake Up
+
+Sometimes, some parts of the gnome desktop display blurry. This is linked to a
+but to the proprietary NVidia drivers. To work around this, we can restart the
+display manager by pressing Alt+f2 and entering the `r` command.
+
+Otherwise, something to test if the issue is too boring is to disable some
+power management options in the NVidia drivers configuration
+`/usr/lib/modprobe.d/nvidia-power-management.conf`:
+
+```
+options nvidia NVreg_PreserveVideoMemoryAllocations=0
+```
+
+### Fix Wrong Battery Percentage
+
+Sometimes, when I wake my computer up, the battery level is wrong showing me a
+few percents when my battery is actually fully charged.
+
+This is a tiny glitch in `upower` service. Rebooting it fixes the bug:
+
+```
+% sudo systemctl restart upower
+```
+
 ## Tools
 
 ### DNF
