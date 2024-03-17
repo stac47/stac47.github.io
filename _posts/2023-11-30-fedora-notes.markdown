@@ -69,6 +69,22 @@ This is a tiny glitch in `upower` service. Rebooting it fixes the bug:
 % sudo systemctl restart upower
 ```
 
+### Fix Trackpad
+
+I still do not found out why some times, the trackpad does not respond anymore.
+Looking at the system logs, I can only see the following error repeating each
+time I touch the trackpad:
+
+```
+```
+
+If this happen, simply reloading the kernel module fix the problem:
+
+```
+% sudo rmmod bcm5974
+% sudo modprobe bcm5974
+```
+
 ## Tools
 
 ### DNF
