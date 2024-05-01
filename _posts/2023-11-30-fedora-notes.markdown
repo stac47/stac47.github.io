@@ -85,6 +85,16 @@ If this happen, simply reloading the kernel module fix the problem:
 % sudo modprobe bcm5974
 ```
 
+### Remap CapsLock key
+
+Remapping key is not something we can do by default via the Settings panel:
+those hackers twaks are accessible with a package called `gnome-tweaks`. When
+installed, run the command `gnome-tweaks` from a terminal or simply run the
+`Tweaks` application via the icon.
+
+Then follow `Keyboard > Additional Layout Options` and in the section `Ctrl
+position` select `Caps Lock as Ctrl`.
+
 ## Tools
 
 ### DNF
