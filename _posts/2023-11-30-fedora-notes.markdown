@@ -20,10 +20,20 @@ MacBook Pro and followed the steps.
 
 ## Post Installation Setup
 
+### Display Grub2 Menu
+
+By default, the Grub menu is skipped and automatically boots with the default
+kernel. To display it:
+
+```
+sudo grub2-editenv - unset menu_auto_hide
+```
+
 ### Keyboard Layout
 
 Apple keyboard is handled by the kernel module called `hid_apple`. This ones
 accepts a bunch of parameters amongst which two are interesting to me:
+
 * `fnmode` which controls how the `fn` key should behave (0=disabled, 1=press
   `fn` to access the F1, F2... keys, 2=the converse of 1, press `fn` to
   access the alternative functions of the F1, F2... keys). My preference is the
@@ -99,7 +109,10 @@ position` select `Caps Lock as Ctrl`.
 
 ### DNF
 
-#### What files a package will install?
+#### Listing Package Files
+
+Sometimes, we may be interested in the files that a package will install on your
+system. This can be achieved with the following command:
 
 ```
 % dnf repoquery -l postgresql
