@@ -6,10 +6,10 @@ tags: linux fedora
 
 # {{ page.title }}
 
-As my MacBook Pro edition 2013 fell out of support from Apple and I did not
-want to use a computer without security updates, I decided to replace the
-proprietary OS by a GNU/Linux one. And as I wanted to give a try to the Fedora
-distribution, I did not install my beloved Debian.
+As my MacBook Pro edition 2013 fell out of support from Apple and I did not want
+to use a computer without security updates, I decided to replace the proprietary
+OS by a GNU/Linux one. And as I wanted to give a try to the Fedora distribution,
+I did not install my beloved Debian.
 
 This page gathers some notes I took about the configuration and the tools
 provided by that distribution.
@@ -98,12 +98,16 @@ If this happen, simply reloading the kernel module fix the problem:
 ### Remap CapsLock key
 
 Remapping key is not something we can do by default via the Settings panel:
-those hackers twaks are accessible with a package called `gnome-tweaks`. When
+those hackers tweaks are accessible with a package called `gnome-tweaks`. When
 installed, run the command `gnome-tweaks` from a terminal or simply run the
 `Tweaks` application via the icon.
 
 Then follow `Keyboard > Additional Layout Options` and in the section `Ctrl
 position` select `Caps Lock as Ctrl`.
+
+### Install `mu4e`
+
+The package which provides `mu4e` is `maildir-utils`.
 
 ## Tools
 
@@ -123,3 +127,54 @@ Last metadata expiration check: 0:15:20 ago on Sat 21 Oct 2023 06:14:05 AM CEST.
 /usr/bin/dropdb
 [...]
 ```
+
+## Upgrades
+
+### Fedora 40
+
+On 11th, August 2024, I upgraded to Fedora 40 which was released on
+March 2024. I had a few issues which are listed below with the fix or
+workaround.
+
+#### WiFi not working
+
+After the reboot, the wife was not working anymore. On my Macbook Pro, the
+chipset is a /Broadcom BCM4360/.
+
+```
+% lspci | grep -i wireless
+03:00.0 Network controller: Broadcom Inc. and subsidiaries BCM4360 802.11ac Dual Band Wireless Network Adapter (rev 03)
+```
+
+The driver is unfortunately proprietary and has to be installed from the
+`rpmfusion-nonfree` repository.
+
+The current issue is tracked [in the Fedora
+bugtracker](https://bugzilla.redhat.com/show_bug.cgi?id=2302577).
+
+I followed the advice: downgrade the package `wpa_supplicant` which seems
+incompatible with `broadcom-wl` package:
+
+```
+% sudo dnf downgrade wpa_supplicant
+```
+
+I also pinned it to that version until the bug is fixed.
+
+```
+% sudo dnf install 'dnf-command(versionlock)'
+% sudo dnf versionlock add
+```
+
+#### NVidia Kernel Module Error
+
+When I boots, the NVidia drivers could not be loaded. That was not a big trouble
+because in that case, we use the free version of the driver called `nouveau`. I
+just removed anything related to the NVidia proprietary drivers.
+
+#### `mu4e` Error
+
+When I wanted to start `mu4e` (in Emacs), I got an error. I enabled the debug
+mode (with `M-x mu4e-toggle-logging`) and discovered it was related to a version
+of indexing schema. This is justified: the previous version of `mu` was 1.10 and
+the new one is 1.12. I just re-indexed my mails.
