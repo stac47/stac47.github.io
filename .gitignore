@@ -4,3 +4,5 @@ _site/
 .jekyll-cache/
 .rbenv-gemsets
 .ruby-version
+/.packages/
+/public/

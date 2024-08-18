@@ -1,0 +1,143 @@
+* Vim Tips
+:PROPERTIES:
+:CUSTOM_ID: page.title
+:END:
+This post evolves each time I discover an exciting feature of Vim.
+
+** Pasting The Output of a Shell Command
+:PROPERTIES:
+:CUSTOM_ID: pasting-the-output-of-a-shell-command
+:END:
+Recently, I wondered if it was possible to display in a buffer a
+specific revision of a file taken from the Git repository of my project
+without leaving Vim. In my case, the file was removed in the latest
+branches on the project and I had to backport some logic that was in the
+original file.
+
+I ended up on the *read* command and more precisely to the following
+form which is documented at =:h read!=:
+
+#+begin_quote
+:[range]r[ead] [++opt] !{cmd}
+
+#+end_quote
+
+So if I want to fill an empty buffer with the file of a specified
+commit/branch:
+
+#+begin_example
+:r !git show old_branch:src/build.sh
+#+end_example
+
+** Insert The Current Date/Time
+:PROPERTIES:
+:CUSTOM_ID: insert-the-current-datetime
+:END:
+We can use the Vim internal =strftime()= function with the =put= command
+(see =:h strftime()= and =:h put=). Be careful, your system needs to
+have this function available.
+
+So to insert the current date in the default format:
+
+#+begin_example
+:pu=strftime('%c')
+#+end_example
+
+** Update Plugin Help Tags
+:PROPERTIES:
+:CUSTOM_ID: update-plugin-help-tags
+:END:
+Sometimes it can occur that some plugin's help is not available. If the
+plugins you use are installed via the Vim 8's plugins manager, you can
+simply use the following command to regenerate all the help tags of all
+the installed plugins
+
+#+begin_example
+:helptags ALL
+#+end_example
+
+More info there: =:h helptags=
+
+** Clearing the Search Pattern
+:PROPERTIES:
+:CUSTOM_ID: clearing-the-search-pattern
+:END:
+When search highlighting is enabled, you might want to clear the
+highlighted patterns. One solution could be to disable the highlighting
+with the command =:noh=. This can be cumbersome because you will need to
+enable it again on your next search.
+
+A better way is probably to clear the last search pattern register as
+shown below:
+
+#+begin_example
+:let @/=""
+#+end_example
+
+More info there: =:h noh= and =:h registers=
+
+** My Vim configure options
+:PROPERTIES:
+:CUSTOM_ID: my-vim-configure-options
+:END:
+My options for the vim build I use everyday (here for MacOS, to be
+adapted for other environments):
+
+#+begin_example
+% ./configure --prefix="$HOME/.local" \
+              --enable-multibyte \
+              --with-tlib=ncurses \
+              --with-compiledby=stac47 \
+              --enable-cscope \
+              --enable-terminal \
+              --disable-perlinterp \
+              --disable-rubyinterp \
+              --disable-python3interp \
+              --disable-gui \
+              --without-x \
+              --disable-luainterp \
+              --disable-gtktest \
+              --disable-netbeans \
+              --enable-fail-if-missing
+#+end_example
+
+** Opening Files From A Generated Files List
+:PROPERTIES:
+:CUSTOM_ID: opening-files-from-a-generated-files-list
+:END:
+Sometime, we may want to start vim and open the set of files you were
+working on, let's say a subset of the files in the previous git commit.
+
+That's sound easy, but there's a tiny trick to be aware of.
+
+If you run the following command:
+
+#+begin_example
+% git diff --name-only HEAD~1 | grep '.rb$' | xargs vim --
+#+end_example
+
+You will see the following warning (and maybe, it will break your
+terminal display and you will have to use =reset= or =stty sane= to fix
+it).
+
+#+begin_quote
+Vim: Warning: Input is not from a terminal
+
+#+end_quote
+
+The reason is that vim expects to be started from a terminal: here vim
+is a child process created by =xargs=. But there is an option with the
+=xargs= command as described in the manpage:
+
+#+begin_quote
+-o Reopen stdin as /dev/tty in the child process before executing the
+command. This is useful if you want xargs to run an interactive
+application.
+
+#+end_quote
+
+So the right command is:
+
+#+begin_example
+% git diff --name-only HEAD~1 | grep '.rb$' | xargs -o vim --
+#+end_example

@@ -1,24 +1,21 @@
----
-layout: post
-title:  "Debian SID in Virtualbox"
-tags: linux debian virtualbox
----
+* Debian SID in Virtualbox
+:PROPERTIES:
+:CUSTOM_ID: page.title
+:END:
+I daily use a *Debian SID* (Still In Development) in a *Virtualbox*
+hosted on a *MS-Windows* system. As this version of GNU/Linux is updated
+almost every day, it is not so uncommon that your embedded system does
+not work properly after you updated it. For example, *Xorg* is not able
+to fully use your screen or the clipboard cannot be shared between the
+host and the guest.
 
-# {{ page.title }}
+The reason is that for the guest additions to work properly, it has to
+be compiled with the current kernel of your system.
 
-I daily use a __Debian SID__ (Still In Development) in a __Virtualbox__ hosted
-on a __MS-Windows__ system. As this version of GNU/Linux is updated almost every
-day, it is not so uncommon that your embedded system does not work properly
-after you updated it. For example, __Xorg__ is not able to fully use your screen
-or the clipboard cannot be shared between the host and the guest.
+Here is an excerpt of the logs you can find in =/var/log/syslog= when
+you have problems:
 
-The reason is that for the guest additions to work properly, it has to be
-compiled with the current kernel of your system.
-
-Here is an excerpt of the logs you can find in `/var/log/syslog` when you have
-problems:
-
-```
+#+begin_example
 systemd[1]: Starting vboxadd.service...
 vboxadd[430]: VirtualBox Guest Additions: Starting.
 vboxadd[430]: VirtualBox Guest Additions: Building the VirtualBox Guest Additions kernel modules.
@@ -39,22 +36,29 @@ vboxadd-service[628]: VirtualBox Additions module not loaded!
 systemd[1]: vboxadd-service.service: Control process exited, code=exited status=1
 systemd[1]: vboxadd-service.service: Failed with result 'exit-code'.
 systemd[1]: Failed to start vboxadd-service.service.
-```
+#+end_example
 
-While these lines are crystal clear, I write here the solution to help my failing memory:
+While these lines are crystal clear, I write here the solution to help
+my failing memory:
 
 1. Install your distribution kernel headers
 
-        sudo ap-get install linux-headers-$(uname -r)
+   #+begin_example
+    sudo ap-get install linux-headers-$(uname -r)
+   #+end_example
 
 2. Mount the VBoxGuestAdditions volume and run the install script
 
-        sudo sh /media/cdrom/VBoxLinuxAdditions.run
+   #+begin_example
+    sudo sh /media/cdrom/VBoxLinuxAdditions.run
+   #+end_example
 
-In case the second operation fails, you can find the compilation step logs in
-`/var/log/vboxadd-setup.log`.
+In case the second operation fails, you can find the compilation step
+logs in =/var/log/vboxadd-setup.log=.
 
-If the generated kernel module fails to load, you can find the reason of such a
-failure with the following command:
+If the generated kernel module fails to load, you can find the reason of
+such a failure with the following command:
 
-    systemctl status vboxadd.service
+#+begin_example
+systemctl status vboxadd.service
+#+end_example

@@ -1,0 +1,113 @@
+* Accessing Github After Deprecation of Password Authentication
+:PROPERTIES:
+:CUSTOM_ID: page.title
+:END:
+On December 2020, Github
+[[https://github.blog/2020-12-15-token-authentication-requirements-for-git-operations/][announced]]:
+
+#+begin_quote
+Beginning August 13, 2021, we will no longer accept account passwords
+when authenticating Git operations on GitHub.com
+
+As a consequence, For developers, if you are using a password to
+authenticate Git operations with GitHub.com today, you must begin
+using a personal access token over HTTPS (recommended) or SSH key by
+August 13, 2021, to avoid disruption.
+#+end_quote
+
+In this post, I will sum up the different changes in configuration and
+workflows that this change implied depending on the working environment
+
+** Personal Environment
+:PROPERTIES:
+:CUSTOM_ID: personal-environment
+:END:
+Simply register your personal SSH public key via *Settings/SSH and GPG
+keys*.
+
+Then clone the repository with the SSH URL like
+
+#+begin_example
+> git clone git@github.com:stac47/stac47.github.io.git
+#+end_example
+
+For the repositories already cloned, you can change the remote URL:
+
+#+begin_example
+> get remote set-url origin git@github.com:stac47/stac47.github.io.git
+#+end_example
+
+If you don't want to do this last operation on all your local
+repositories, you can set git so that it will force the SSH usage.
+
+#+begin_example
+> git config --global url."git@github.com:".insteadOf "https://github.com/"
+#+end_example
+
+** Working Environment
+:PROPERTIES:
+:CUSTOM_ID: working-environment
+:END:
+In a constrained environment like a company, you can face the following
+issues: - the firewall rules does not allow outgoing traffic through
+port 22: in this case, you can SSH over HTTPS port (443) - some machines
+can be isolated from the internet network: in that case, you can create
+SSH tunnel to github.com
+
+*** SSH over the HTTPS Port
+:PROPERTIES:
+:CUSTOM_ID: ssh-over-the-https-port
+:END:
+This section assumes the machine your logged in has HTTPS access to
+[[https://github.com]], but the firewall rules prevent your from
+accessing port 22.
+
+The trick is to configure the SSH client so that it will use port 443
+instead of the default one (22) for a given URL. So for /github.com/,
+you can edit =~/.ssh/config= (create it if need be) and write in it:
+
+#+begin_example
+Host github.com
+  Hostname ssh.github.com
+  Port 443
+#+end_example
+
+Official help:
+[[https://docs.github.com/en/github/authenticating-to-github/troubleshooting-ssh][Help]]
+
+*** SSH Tunneling
+:PROPERTIES:
+:CUSTOM_ID: ssh-tunneling
+:END:
+Provided that the machine /isolated.mycompany.com/ is on a network which
+cannot access internet, and a machine /connected.mycompany.com/ that can
+connect Github site through HTTPS port, you can run a tunnel isolated to
+[[https://github.com][github.com]] through the connected machine. (I
+used the entry port 8022 because I am not root on that machine neither)
+
+On the machine /isolated.mycompany.com/, first create the tunnel:
+
+#+begin_example
+> ssh -fN -L 8022:ssh.github.com:443 me@connected.mycompany.com
+#+end_example
+
+As in the previous section, configure the SSH client to change the
+Github endpoint to automatically use the tunnel:
+
+#+begin_example
+Host github.com
+  Hostname localhost
+  Port 8022
+#+end_example
+
+Note that the tips to change the repository URL described in section
+*Personal Environment* also apply.
+
+** Conclusion
+:PROPERTIES:
+:CUSTOM_ID: conclusion
+:END:
+The help pages of Github are very well done. In case, you need to
+trouble shoot your connectivity, you can follow the
+[[https://docs.github.com/en/github/authenticating-to-github/troubleshooting-ssh][troubleshooting
+guide]].

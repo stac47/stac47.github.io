@@ -1,0 +1,215 @@
+* Fedora Notes
+:PROPERTIES:
+:CUSTOM_ID: page.title
+:END:
+As my MacBook Pro edition 2013 fell out of support from Apple and I did
+not want to use a computer without security updates, I decided to
+replace the proprietary OS by a GNU/Linux one. And as I wanted to give a
+try to the Fedora distribution, I did not install my beloved Debian.
+
+This page gathers some notes I took about the configuration and the
+tools provided by that distribution.
+
+I must say that I had no problem installing the version 38 of Fedora: I
+prepared a USB stick with the recommended tool I installed on my MacOS
+MacBook Pro and followed the steps.
+
+** Post Installation Setup
+:PROPERTIES:
+:CUSTOM_ID: post-installation-setup
+:END:
+*** Display Grub2 Menu
+:PROPERTIES:
+:CUSTOM_ID: display-grub2-menu
+:END:
+By default, the Grub menu is skipped and automatically boots with the
+default kernel. To display it:
+
+#+begin_example
+sudo grub2-editenv - unset menu_auto_hide
+#+end_example
+
+*** Keyboard Layout
+:PROPERTIES:
+:CUSTOM_ID: keyboard-layout
+:END:
+Apple keyboard is handled by the kernel module called =hid_apple=. This
+ones accepts a bunch of parameters amongst which two are interesting to
+me:
+
+- =fnmode= which controls how the =fn= key should behave (0=disabled,
+  1=press =fn= to access the F1, F2... keys, 2=the converse of 1, press
+  =fn= to access the alternative functions of the F1, F2... keys). My
+  preference is the option 2.
+- =iso_layout= to have the key =~= next to the upcase key (instead of
+  below the =Esc= key).
+
+So I created the file =/etc/modprobe.d/hid_apple.conf= and added the
+following:
+
+#+begin_example
+options hid_apple fnmode=2
+options hid_apple iso_layout=0
+#+end_example
+
+Next, to make this persistent, I regenerated the =initramfs= using
+=dracut=:
+
+#+begin_example
+% sudo dracut --force
+#+end_example
+
+*** Fix NVidia Blurry Display on Wake Up
+:PROPERTIES:
+:CUSTOM_ID: fix-nvidia-blurry-display-on-wake-up
+:END:
+Sometimes, some parts of the gnome desktop display blurry. This is
+linked to a but to the proprietary NVidia drivers. To work around this,
+we can restart the display manager by pressing Alt+f2 and entering the
+=r= command.
+
+Otherwise, something to test if the issue is too boring is to disable
+some power management options in the NVidia drivers configuration
+=/usr/lib/modprobe.d/nvidia-power-management.conf=:
+
+#+begin_example
+options nvidia NVreg_PreserveVideoMemoryAllocations=0
+#+end_example
+
+*** Fix Wrong Battery Percentage
+:PROPERTIES:
+:CUSTOM_ID: fix-wrong-battery-percentage
+:END:
+Sometimes, when I wake my computer up, the battery level is wrong
+showing me a few percents when my battery is actually fully charged.
+
+This is a tiny glitch in =upower= service. Rebooting it fixes the bug:
+
+#+begin_example
+% sudo systemctl restart upower
+#+end_example
+
+*** Fix Trackpad
+:PROPERTIES:
+:CUSTOM_ID: fix-trackpad
+:END:
+I still do not found out why some times, the trackpad does not respond
+anymore. Looking at the system logs, I can only see the following error
+repeating each time I touch the trackpad:
+
+#+begin_example
+#+end_example
+
+If this happen, simply reloading the kernel module fix the problem:
+
+#+begin_example
+% sudo rmmod bcm5974
+% sudo modprobe bcm5974
+#+end_example
+
+*** Remap CapsLock key
+:PROPERTIES:
+:CUSTOM_ID: remap-capslock-key
+:END:
+Remapping key is not something we can do by default via the Settings
+panel: those hackers tweaks are accessible with a package called
+=gnome-tweaks=. When installed, run the command =gnome-tweaks= from a
+terminal or simply run the =Tweaks= application via the icon.
+
+Then follow =Keyboard > Additional Layout Options= and in the section
+=Ctrl position= select =Caps Lock as Ctrl=.
+
+*** Install =mu4e=
+:PROPERTIES:
+:CUSTOM_ID: install-mu4e
+:END:
+The package which provides =mu4e= is =maildir-utils=.
+
+** Tools
+:PROPERTIES:
+:CUSTOM_ID: tools
+:END:
+*** DNF
+:PROPERTIES:
+:CUSTOM_ID: dnf
+:END:
+**** Listing Package Files
+:PROPERTIES:
+:CUSTOM_ID: listing-package-files
+:END:
+Sometimes, we may be interested in the files that a package will install
+on your system. This can be achieved with the following command:
+
+#+begin_example
+% dnf repoquery -l postgresql
+Last metadata expiration check: 0:15:20 ago on Sat 21 Oct 2023 06:14:05 AM CEST.
+/usr/bin/clusterdb
+/usr/bin/createdb
+/usr/bin/createuser
+/usr/bin/dropdb
+[...]
+#+end_example
+
+** Upgrades
+:PROPERTIES:
+:CUSTOM_ID: upgrades
+:END:
+*** Fedora 40
+:PROPERTIES:
+:CUSTOM_ID: fedora-40
+:END:
+On 11th, August 2024, I upgraded to Fedora 40 which was released on
+March 2024. I had a few issues which are listed below with the fix or
+workaround.
+
+**** WiFi not working
+:PROPERTIES:
+:CUSTOM_ID: wifi-not-working
+:END:
+After the reboot, the wife was not working anymore. On my Macbook Pro,
+the chipset is a /Broadcom BCM4360/.
+
+#+begin_example
+% lspci | grep -i wireless
+03:00.0 Network controller: Broadcom Inc. and subsidiaries BCM4360 802.11ac Dual Band Wireless Network Adapter (rev 03)
+#+end_example
+
+The driver is unfortunately proprietary and has to be installed from the
+=rpmfusion-nonfree= repository.
+
+The current issue is tracked
+[[https://bugzilla.redhat.com/show_bug.cgi?id=2302577][in the Fedora
+bugtracker]].
+
+I followed the advice: downgrade the package =wpa_supplicant= which
+seems incompatible with =broadcom-wl= package:
+
+#+begin_example
+% sudo dnf downgrade wpa_supplicant
+#+end_example
+
+I also pinned it to that version until the bug is fixed.
+
+#+begin_example
+% sudo dnf install 'dnf-command(versionlock)'
+% sudo dnf versionlock add
+#+end_example
+
+**** NVidia Kernel Module Error
+:PROPERTIES:
+:CUSTOM_ID: nvidia-kernel-module-error
+:END:
+When I boots, the NVidia drivers could not be loaded. That was not a big
+trouble because in that case, we use the free version of the driver
+called =nouveau=. I just removed anything related to the NVidia
+proprietary drivers.
+
+**** =mu4e= Error
+:PROPERTIES:
+:CUSTOM_ID: mu4e-error
+:END:
+When I wanted to start =mu4e= (in Emacs), I got an error. I enabled the
+debug mode (with =M-x mu4e-toggle-logging=) and discovered it was
+related to a version of indexing schema. This is justified: the previous
+version of =mu= was 1.10 and the new one is 1.12. I just re-indexed my
+mails.

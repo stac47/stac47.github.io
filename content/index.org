@@ -1,0 +1,42 @@
+* My useless site
+
+** Articles
+
+*** 2023
+
+- [[file:fedora-notes.org][Fedora Notes]]
+- [[file:ruby-tips-and-tricks.org][Ruby: Tips & Tricks]]
+
+*** 2022
+
+- [[file:git-revert-rebase.org][Git: Revert & Rebase]]
+
+*** 2021
+
+- [[file:printf-by-example.org][printf By Example]]
+- [[file:emulate-other-architectures-on-linux.org][Emulate other Architectures on a Linux System]]
+- [[file:access-github-changes.org][Accessing Github After Deprecation of Password Authentication]]
+
+*** 2020
+
+- [[file:vim-tips.org][Vim Tips]]
+- [[file:vim-ctrl-v.org][Vim Ctrl+V]]
+
+*** 2019
+
+- [[file:debug-stdin-go-with-dwelve.org][Debugging a Go Program That Read From Stdin With Delve]]
+
+*** 2018
+
+- [[file:understanding-relocation-elf.org][Understanding Relocations in ELF]]
+- [[file:virtualbox-debian-sid.org][Virtualbox Debian SID]]
+
+*** 2017
+
+- [[file:vim-massive-substitute.org][Vim Massive Substitute]]
+- [[file:cpp11-performances.org][C++11 Performances]]
+
+*** 2014
+
+- [[file:vim-advanced-cheat-sheet.org][Vim Advanced Cheat Sheet]]
+- [[file:ruby-and-curses-tutorial.org][Ruby & Curses Tutorial]]
