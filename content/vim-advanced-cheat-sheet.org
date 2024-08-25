@@ -1,4 +1,4 @@
-* Vim Adcanced Cheat Sheet
+* Vim Advanced Cheat Sheet
 :PROPERTIES:
 :CUSTOM_ID: page.title
 :END:
@@ -29,14 +29,14 @@ of spaces.
 :END:
 Documentation at: =:h f=.
 
-| Keystrokes | Movement                                                         |
-|------------+------------------------------------------------------------------|
-| =f{char}=  | Forward to the next occurence of /char/                          |
-| =F{char}=  | Backward to the previous occurence of /char/                     |
-| =t{char}=  | Forward to the character before the next occurence of /char/     |
-| =T{char}=  | Backward to the character after the previous occurence of /char/ |
-| =;=        | Repeat the last Character-search movement                        |
-| =,=        | Reverse the last Character-search movement                       |
+| Keystrokes | Movement                                                          |
+|------------+-------------------------------------------------------------------|
+| =f{char}=  | Forward to the next occurrence of /char/                          |
+| =F{char}=  | Backward to the previous occurrence of /char/                     |
+| =t{char}=  | Forward to the character before the next occurrence of /char/     |
+| =T{char}=  | Backward to the character after the previous occurrence of /char/ |
+| =;=        | Repeat the last Character-search movement                         |
+| =,=        | Reverse the last Character-search movement                        |
 
 *** Text Objects
 :PROPERTIES:
@@ -71,8 +71,8 @@ or '}'.
 | =i'=         | Inside a pair of single quotes   |
 | =a"=         | A pair of double quotes          |
 | =i"=         | Inside a pair of double quotes   |
-| =a`=         | A pair of backticks              |
-| =i`=         | Inside a pair of backticks       |
+| =a`=         | A pair of back-ticks             |
+| =i`=         | Inside a pair of back-ticks      |
 | =at=         | A pair of xml tags               |
 | =it=         | Inside a pair of xml tags        |
 
@@ -83,17 +83,17 @@ or '}'.
 All the motion described above can be used with operators to modify the
 file from the *Normal Mode*.
 
-| Keystrokes | Ex command | Action                                  |
-|------------+------------+-----------------------------------------|
-| =c=        | =:change=  | Change: delete + swith to *Insert Mode* |
-| =d=        | =:delete=  | Delete                                  |
-| =y=        | =:yank=    | Yank into register                      |
-| =g~=       |            | Swap case                               |
-| =gu=       |            | To lower case                           |
-| =gU=       |            | To upper case                           |
-| =>=        |            | Shift right                             |
-| =<=        |            | Shift left                              |
-| ===        |            | Auto-indent                             |
+| Keystrokes | Ex command | Action                                   |
+|------------+------------+------------------------------------------|
+| =c=        | =:change=  | Change: delete + switch to *Insert Mode* |
+| =d=        | =:delete=  | Delete                                   |
+| =y=        | =:yank=    | Yank into register                       |
+| =g~=       |            | Swap case                                |
+| =gu=       |            | To lower case                            |
+| =gU=       |            | To upper case                            |
+| =>=        |            | Shift right                              |
+| =<=        |            | Shift left                               |
+| ===        |            | Auto-indent                              |
 
 Examples
 
@@ -111,7 +111,7 @@ Examples
 | =C=              | =c$=       | Change until the end of the line          |
 | =s=              | =cl=       | Change the letter under the cursor        |
 | =S=              | =^C=       | Change the current line                   |
-| =I=              | =^i=       | Insert at the begining of the line        |
+| =I=              | =^i=       | Insert at the beginning of the line       |
 | =A=              | =$a=       | Insert at the end of the line             |
 | =o=              | =A<CR>=    | Insert a new line after the current line  |
 | =O=              | =ko=       | Insert a new line before the current line |
@@ -175,7 +175,7 @@ History of the jumps are accessible thanks to the Ex command =:jump=.
 | Keystrokes | Description                            |
 |------------+----------------------------------------|
 | =<C-o>=    | Backward through the history of jumps. |
-| =<C-i>=    | Foreward through the history of jumps. |
+| =<C-i>=    | Forward through the history of jumps.  |
 
 ** Visual Mode
 :PROPERTIES:
@@ -187,33 +187,33 @@ Documentation at: =:h visual-mode=.
 :PROPERTIES:
 :CUSTOM_ID: enter-visual-mode
 :END:
-| Keystrokes | Description                        |
-|------------+------------------------------------|
-| =v=        | Enter visual mode characterwise    |
-| =V=        | Enter visual mode linewise         |
-| =C-v=      | Enter visual mode blockwise        |
-| =gv=       | Reselect the last visual selection |
+| Keystrokes | Description                         |
+|------------+-------------------------------------|
+| =v=        | Enter visual mode character-wise    |
+| =V=        | Enter visual mode line-wise         |
+| =C-v=      | Enter visual mode block-wise        |
+| =gv=       | Re-select the last visual selection |
 
 *** Exit Visual Mode
 :PROPERTIES:
 :CUSTOM_ID: exit-visual-mode
 :END:
-| Keystrokes | Description                                |
-|------------+--------------------------------------------|
-| =<ESC>=    | Exit visual mode                           |
-| =v=        | Exit visual from visual mode characterwise |
-| =V=        | Exit visual from visual mode linewise      |
-| =C-v=      | Exit visual from visual mode blockwise     |
+| Keystrokes | Description                                 |
+|------------+---------------------------------------------|
+| =<ESC>=    | Exit visual mode                            |
+| =v=        | Exit visual from visual mode character-wise |
+| =V=        | Exit visual from visual mode line-wise      |
+| =C-v=      | Exit visual from visual mode block-wise     |
 
 *** Switch Visual Mode Type
 :PROPERTIES:
 :CUSTOM_ID: switch-visual-mode-type
 :END:
-| Keystrokes | Description                                         |
-|------------+-----------------------------------------------------|
-| =v=        | Switch to visual characterwise from line/block wise |
-| =V=        | Switch to visual linewise from character/block wise |
-| =C-v=      | Switch to visual block from character/line wise     |
+| Keystrokes | Description                                          |
+|------------+------------------------------------------------------|
+| =v=        | Switch to visual character-wise from line/block wise |
+| =V=        | Switch to visual line-wise from character/block wise |
+| =C-v=      | Switch to visual block from character/line wise      |
 
 *** Operations in Visual Mode
 :PROPERTIES:
@@ -239,7 +239,7 @@ Documentation at: =:h visual-mode=.
 
 Examples:
 
-- To insert a character from unicode codepoint, for instance,
+- To insert a character from Unicode code-point, for instance,
   unbreakable space (=0X00A0=), use =<C-v>xa0=.
 - In french, to insert 'œ' simply type: =<C-k>oe=.
 
@@ -342,9 +342,9 @@ range corresponding to the select block of text.
 1. Fill the args with the list of file to modify: =:args **/*.cpp=.
 2. Apply the substitution: =:argdo %s/old/new/g=.
 
-***** Convert from CamelCase to underscore_case
+***** Convert from Camel-Case to underscore_case
 :PROPERTIES:
-:CUSTOM_ID: convert-from-camelcase-to-underscore_case
+:CUSTOM_ID: convert-from-camel-case-to-underscore_case
 :END:
 The trick is to use:
 
