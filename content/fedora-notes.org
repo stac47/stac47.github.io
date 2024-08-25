@@ -166,6 +166,10 @@ workaround.
 :PROPERTIES:
 :CUSTOM_ID: wifi-not-working
 :END:
+*Update 25th August 2024*: the problem is workaround in =wl-kmod= from
+version =6.30.223.271-53.fc40=. The latest version of the
+=wpa_supplicant= provided by default in Fedora 40 now works.
+
 After the reboot, the wife was not working anymore. On my Macbook Pro,
 the chipset is a /Broadcom BCM4360/.
 
