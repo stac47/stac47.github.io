@@ -1,0 +1,53 @@
+* Emacs 30: =etags-regen-mode=
+
+It's been close to one year that I exclusively use Emacs for anything
+I do on a computer, be coding activities, be reading emails or man
+pages. I decommissioned all the specific tools (like =vim=, =mutt=)
+which all requires a mental effort to remember the shortcuts. Using
+Emacs is a guarantee to have a unified set of tools at hands.
+
+Last week, after the announcement of version 30, I compiled Emacs
+mainly because wanted the new `use-package` ability to install package
+directly from a version control repository.
+
+I also discovered the =etags-regen-mode= which gives the possibility
+to automate the project tags generation.
+
+Before this, I used to run =etags= manually:
+
+#+begin_src bash
+  find . -name '*.rb' -print | etags -
+#+end_src
+
+And I created an interactive command to automatically search in visit
+the =TAGS= file in a project.
+
+#+begin_src emacs-lisp
+  (use-package project
+    :init
+    (defun stac/project-tags ()
+      "When in a project, visit the tags file at the root of the project."
+      (interactive)
+      (if (project-current)
+          (let* ((proj-root (expand-file-name (project-root (project-current))))
+                 (old-tags-file tags-file-name)
+                 (new-tags-file (concat proj-root "TAGS")))
+            (if (equal old-tags-file new-tags-file)
+                (message "Tags file not changed: %s" old-tags-file)
+              (visit-tags-table new-tags-file)
+              (message "Tags file changed: %s -> %s" old-tags-file new-tags-file)))
+        (message "No current project")))
+    :bind
+    (:map project-prefix-map
+          ("t" . stac/project-tags)
+          ("m" . magit-project-status)))
+#+end_src
+
+Now with the =etags-regen-mode= minor mode, I can automate all this. I
+just created a =.dir-locals.el= file at the root of the project I want
+the tags to be generated from with something like:
+
+#+begin_src emacs-lisp
+  ((nil . ((etags-regen-program-options . ("--language=ruby"))
+           (mode . etags-regen))))
+#+end_src

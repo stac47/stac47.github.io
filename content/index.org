@@ -2,6 +2,10 @@
 
 ** Articles
 
+*** 2025
+
+- [[file:emacs-30-etags-regen-mode.org][Emacs 30: etags-regen-mode]]
+
 *** 2023
 
 - [[file:fedora-notes.org][Fedora Notes]]
