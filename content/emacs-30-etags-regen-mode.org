@@ -2,18 +2,29 @@
 
 It's been close to one year that I exclusively use Emacs for anything
 I do on a computer, be coding activities, be reading emails or man
-pages. I decommissioned all the specific tools (like =vim=, =mutt=)
-which all requires a mental effort to remember the shortcuts. Using
-Emacs is a guarantee to have a unified set of tools at hands.
+pages, be writing music sheets with =GNU lilypond=. I decommissioned
+all the specific tools (like =vim=, =mutt=) which all require a mental
+effort to remember the shortcuts of. Using Emacs is a guarantee to
+have a unified set of tools at hand.
 
 Last week, after the announcement of version 30, I compiled Emacs
 mainly because wanted the new `use-package` ability to install package
-directly from a version control repository.
+directly from a version control repository which is convenient when
+you maintain a fork of a package. For instance, now without adding any
+package to bring the feature to `use-package`, I have the following in
+my configuration:
+
+#+begin_src emacs-lisp
+  (use-package chruby
+    :vc (:url "https://github.com/stac47/chruby.el.git" :branch "main"))
+#+end_src
 
 I also discovered the =etags-regen-mode= which gives the possibility
 to automate the project tags generation.
 
-Before this, I used to run =etags= manually:
+Before this, I used to run =etags= manually from times to times mainly
+when a symbol was no more findable or when I was no more directed to
+the right place in a source file.
 
 #+begin_src bash
   find . -name '*.rb' -print | etags -
@@ -51,3 +62,12 @@ the tags to be generated from with something like:
   ((nil . ((etags-regen-program-options . ("--language=ruby"))
            (mode . etags-regen))))
 #+end_src
+
+When the =TAGS= file does not exist, it will be generated the first
+time a file is saved on the project. Depending upon your project size,
+it may be a bit long and Emacs freezes. Hence, I feared some lag each
+time I saved a file, but it is not the case: only the modified file is
+passed to =etags= program to update the current =TAGS= file.
+
+Adopted. Thanks all the Emacs developers for this jewel given to
+humanity.
