@@ -34,7 +34,7 @@ sudo grub2-editenv - unset menu_auto_hide
 :CUSTOM_ID: keyboard-layout
 :END:
 Apple keyboard is handled by the kernel module called =hid_apple=. This
-ones accepts a bunch of parameters amongst which two are interesting to
+one accepts a bunch of parameters amongst which two are interesting to
 me:
 
 - =fnmode= which controls how the =fn= key should behave (0=disabled,
@@ -64,9 +64,9 @@ Next, to make this persistent, I regenerated the =initramfs= using
 :CUSTOM_ID: fix-nvidia-blurry-display-on-wake-up
 :END:
 Sometimes, some parts of the gnome desktop display blurry. This is
-linked to a but to the proprietary NVidia drivers. To work around this,
-we can restart the display manager by pressing Alt+f2 and entering the
-=r= command.
+linked to the proprietary NVidia drivers. To work around this, we can
+restart the display manager by pressing Alt+f2 and entering the =r=
+command.
 
 Otherwise, something to test if the issue is too boring is to disable
 some power management options in the NVidia drivers configuration
@@ -75,6 +75,9 @@ some power management options in the NVidia drivers configuration
 #+begin_example
 options nvidia NVreg_PreserveVideoMemoryAllocations=0
 #+end_example
+
+*Edit February 2025*: Since Fedora 41, I have no display issues
+anymore.
 
 *** Fix Wrong Battery Percentage
 :PROPERTIES:
@@ -89,29 +92,30 @@ This is a tiny glitch in =upower= service. Rebooting it fixes the bug:
 % sudo systemctl restart upower
 #+end_example
 
+*Update February 2025*: I did not experience this problem with
+Fedora 41.
+
 *** Fix Trackpad
 :PROPERTIES:
 :CUSTOM_ID: fix-trackpad
 :END:
-I still do not found out why some times, the trackpad does not respond
-anymore. Looking at the system logs, I can only see the following error
-repeating each time I touch the trackpad:
-
-#+begin_example
-#+end_example
-
-If this happen, simply reloading the kernel module fix the problem:
+I still did not find out why sometimes, the trackpad does not respond
+anymore. If this happen, simply reloading the kernel module fix the
+problem:
 
 #+begin_example
 % sudo rmmod bcm5974
 % sudo modprobe bcm5974
 #+end_example
 
+*Update February 2025*: I did not experience this problem with
+Fedora 41.
+
 *** Remap CapsLock key
 :PROPERTIES:
 :CUSTOM_ID: remap-capslock-key
 :END:
-Remapping key is not something we can do by default via the Settings
+Keys remapping is not something we can do by default via the Settings
 panel: those hackers tweaks are accessible with a package called
 =gnome-tweaks=. When installed, run the command =gnome-tweaks= from a
 terminal or simply run the =Tweaks= application via the icon.
@@ -149,6 +153,11 @@ Last metadata expiration check: 0:15:20 ago on Sat 21 Oct 2023 06:14:05 AM CEST.
 /usr/bin/dropdb
 [...]
 #+end_example
+
+*** Copying Files from iPhone
+
+The idea is to use the =libimobiledevice= library. I created a
+directory =~/.iPhone= then =ifuse ~/iPhone=.
 
 ** Upgrades
 :PROPERTIES:
@@ -217,3 +226,8 @@ debug mode (with =M-x mu4e-toggle-logging=) and discovered it was
 related to a version of indexing schema. This is justified: the previous
 version of =mu= was 1.10 and the new one is 1.12. I just re-indexed my
 mails.
+
+*** Fedora 41
+
+I upgraded to Fedora 41 in Febrary 2025. All worked fine. I experience
+no display issues anymore with the NVidia drivers.
