@@ -2,7 +2,10 @@
 :PROPERTIES:
 :CUSTOM_ID: page.title
 :END:
-** Rapidly Compute the CIDR Range
+
+** General
+
+*** Rapidly Compute the CIDR Range
 :PROPERTIES:
 :CUSTOM_ID: rapidly-compute-the-cidr-range
 :END:
@@ -21,3 +24,20 @@ To check whether an IP address belongs to the range:
 irb(main):003> IPAddr.new("10.101.64.0/18") === "127.0.0.2"
 => false
 #+end_example
+
+** RSpec
+
+*** Debugging a Failing Expectation
+
+When a spec is failing, the displayed error cause is
+truncated. Sometimes, it makes it difficult to understand what
+happened.
+
+To solve this, RSpec provides a way to control the length of the
+output:
+
+#+begin_src ruby
+  RSpec::Support::ObjectFormatter.default_instance.max_formatted_output_length = 2000
+#+end_src
+
+Setting this to =nil= will not limit the output.
