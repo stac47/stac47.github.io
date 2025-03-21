@@ -41,3 +41,26 @@ output:
 #+end_src
 
 Setting this to =nil= will not limit the output.
+
+*** Silencing write to standard output
+
+Some code may write to the standard output using the =Kernel#puts= or
+=Kernel#print= which pollute the output when running =rspec=. To
+silence the noisy code, we can add in a =before= block:
+
+#+begin_src ruby
+  before { allow($stdout).to receive(:puts) }
+#+end_src
+
+*** Mocking the production environment
+
+In Rails, we sometimes need to validate a specific behaviour in
+production environment. To simulate that, we can do something like:
+
+#+begin_src ruby
+  before do
+    allow(Rails)
+      .to receive(:env)
+      .and_return(ActiveSupport::StringInquirer.new('production'))
+  end
+#+end_src
