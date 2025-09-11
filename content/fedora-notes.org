@@ -29,6 +29,43 @@ default kernel. To display it:
 sudo grub2-editenv - unset menu_auto_hide
 #+end_example
 
+To hide it again:
+
+#+begin_example
+sudo grub2-editenv - set menu_auto_hide=1
+#+end_example
+
+*** Display =systemd= boot sequence
+
+By default on =Fedora=, the boot sequence is hidden by the =Fedora=
+screen. To remove this, we need to remove the =rhgb= kernel boot
+option (=rhgb= stands for "Red Hat Graphical Boot").
+
+I edited the file =/etc/default/grub= and removed the =rhgb= option
+from the line defining the =GRUB_CMDLINE_LINUX= variable. Then I
+regenerated the grub config:
+
+#+begin_example
+sudo grub2-mkconfig -o /boot/grub2/grub.cfg
+#+end_example
+
+And restarted the machine.
+
+*** Increase character size during the boot sequence
+
+First, I discovered my default =grub= configuration had the following
+setting:
+
+#+begin_example
+GRUB_TERMINAL_OUTPUT="console"
+#+end_example
+
+Commenting this line (regenerating the =grub.cfg=) allows to use the
+full screen at boot time. Though, as the Apple Retina screen really
+has a high resolution, everything is very small (although readable by
+my eyes). It would be great to make the display bigger in case my eyes
+weaken.
+
 *** Keyboard Layout
 :PROPERTIES:
 :CUSTOM_ID: keyboard-layout
@@ -231,3 +268,40 @@ mails.
 
 I upgraded to Fedora 41 in Febrary 2025. All worked fine. I experience
 no display issues anymore with the NVidia drivers.
+
+**** =wl= module tainted the kernel
+
+#+begin_example
+% dmsg -HP
+[...]
+[  +0.000003] Unpatched return thunk in use. This should not happen!
+[  +0.000003] WARNING: CPU: 2 PID: 688 at arch/x86/kernel/cpu/bugs.c:3070 __warn_thunk+0x2a/0x40
+[  +0.000007] Modules linked in: wl(POE+) snd_hda_codec_generic snd_hda_codec_hdmi(+) kvm_intel(+) bluetooth(+) iTCO_wdt snd_hda_intel snd_intel_dspcfg intel_pmc_bxt snd_intel_sdw_acpi snd_hda_codec mei_hdcp joydev mei_pxp iTCO_vendor_support kvm snd_hda_core applesmc(+) snd_hwdep snd_seq rapl intel_cstate cfg80211 thunderbolt snd_seq_device intel_uncore snd_pcm i2c_i801 i2c_smbus snd_timer lpc_ich rfkill mei_me mei snd sbs bcm5974 soundcore acpi_als sbshc industrialio_triggered_buffer kfifo_buf industrialio apple_gmux apple_mfi_fastcharge loop nfnetlink zram lz4hc_compress lz4_compress crct10dif_pclmul crc32_pclmul crc32c_intel polyval_clmulni polyval_generic ghash_clmulni_intel uas sha512_ssse3 sha256_ssse3 sha1_ssse3 usb_storage hid_apple video wmi fuse
+[  +0.000056] CPU: 2 UID: 0 PID: 688 Comm: (udev-worker) Tainted: P           OE      6.13.11-200.fc41.x86_64 #1
+[  +0.000004] Tainted: [P]=PROPRIETARY_MODULE, [O]=OOT_MODULE, [E]=UNSIGNED_MODULE
+[  +0.000002] Hardware name: Apple Inc. MacBookPro11,3/Mac-2BD1B31983FE1663, BIOS 478.0.0.0.0 01/13/2023
+[...]
+#+end_example
+
+This is just a warning.
+
+*** Fedora 42
+
+I upgraded to Fedora 42 on May 2025. After the reboot, the screen was
+black and I shutdown the computer. Not a great idea: the upgrade was
+still ongoing. The Fedora was a mix of FC 41 and 42. The two commands
+that fixed the whole thing were:
+
+#+begin_example
+% sudo dnf upgrade --releasever=42
+% sudo dnf distro-sync --releasever=42 --setopt protected_package=
+#+end_example
+
+**** Removing NVidia Drivers
+
+I gave a try to the =Nouveau= drivers because somehow the intermittent
+blurry screen was back.
+
+#+begin_example
+% sudo dnf remove akmod-nvidia-470xx nvidia-settings-470xx nvidia-gpu-firmware
+#+end_example
