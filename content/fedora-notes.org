@@ -116,6 +116,10 @@ options nvidia NVreg_PreserveVideoMemoryAllocations=0
 *Edit February 2025*: Since Fedora 41, I have no display issues
 anymore.
 
+*Edit September 2025*: With Fedora 42, the problems of display were
+back. I finally removed the Nvidia drivers and used the =nouveau= ones
+without any problem.
+
 *** Fix Wrong Battery Percentage
 :PROPERTIES:
 :CUSTOM_ID: fix-wrong-battery-percentage
@@ -305,3 +309,20 @@ blurry screen was back.
 #+begin_example
 % sudo dnf remove akmod-nvidia-470xx nvidia-settings-470xx nvidia-gpu-firmware
 #+end_example
+
+*** Interesting Remarks
+
+**** Do not use a Display Manager other than =gdm=
+
+I tried to use another Display Manager (namely =lightdm=). That works
+fine except you cannot lock your computer anymore although:
+
+#+begin_example
+% gsettings get org.gnome.desktop.screensaver lock-enabled
+true
+% gsettings get org.gnome.desktop.lockdown disable-lock-screen
+false
+#+end_example
+
+Gnome requires =gdm= to be the Display Manager otherwise locking the
+computer is not allowed.
