@@ -310,6 +310,94 @@ blurry screen was back.
 % sudo dnf remove akmod-nvidia-470xx nvidia-settings-470xx nvidia-gpu-firmware
 #+end_example
 
+*** Fedora 43/44
+Upgrades went fine. But since Fedora 43, I have a new problem with
+NVidia nouveau drivers.
+
+**** New problem with nouveau
+
+Sometimes, once or twice per week, Gnome crashes: the system seems to
+freeze for a couple of seconds, then the screen becomes black and I am
+back to the login screen as if I just booted my computer. More rarely,
+the screen remains frozen and I need to do a hard reboot (maintaining
+pressed the power button).
+
+When this occurs, I can see that gnome-shell process suffers from SIG
+
+#+begin_quote
+May 28 11:51:53 saturn kernel: nouveau 0000:01:00.0: fifo: SCHED_ERROR 0a [CTXSW_TIMEOUT]
+May 28 11:51:53 saturn kernel: nouveau 0000:01:00.0: fifo:000000:0003:[gnome-shell[3002]] rc scheduled
+May 28 11:51:53 saturn kernel: nouveau 0000:01:00.0: fifo:000000: rc scheduled
+May 28 11:51:53 saturn kernel: nouveau 0000:01:00.0: fifo:000000:0003:0003:[gnome-shell[3002]] errored - disabling channel
+May 28 11:51:53 saturn kernel: nouveau 0000:01:00.0: systemd-logind[1101]: channel 3 killed!
+May 28 11:51:53 saturn kernel: show_signal_msg: 29 callbacks suppressed
+May 28 11:51:53 saturn kernel: gnome-shell[3002]: segfault at 561000000000 ip 00007f96895e5f67 sp 00007fff71905c40 error 4 in libgallium-26.0.6.so[be5f67,7f9688a00000+1ea7000] likely on CPU 6 (core 2, socket 0)
+May 28 11:51:53 saturn systemd-coredump[36790]: Process 3002 (gnome-shell) of user 1000 terminated abnormally with signal 11/SEGV, processing...
+#+end_quote
+
+With the backtrace:
+
+#+begin_quote
+#0  0x00007f96895e5f67 pushbuf_dump (libgallium-26.0.6.so + 0xbe5f67)
+#1  0x00007f96895e886a pushbuf_flush.isra.0 (libgallium-26.0.6.so + 0xbe886a)
+#2  0x00007f96895e94bf nouveau_pushbuf_refn (libgallium-26.0.6.so + 0xbe94bf)
+#3  0x00007f9689d14dcb nvc0_screen_fence_emit (libgallium-26.0.6.so + 0x1314dcb)
+#4  0x00007f9689d3b157 _nouveau_fence_emit (libgallium-26.0.6.so + 0x133b157)
+#5  0x00007f9689d3b52c _nouveau_fence_next (libgallium-26.0.6.so + 0x133b52c)
+#6  0x00007f9689d88c45 nvc0_default_kick_notify (libgallium-26.0.6.so + 0x1388c45)
+#7  0x00007f96895e841c pushbuf_flush.isra.0 (libgallium-26.0.6.so + 0xbe841c)
+#8  0x00007f96895e94bf nouveau_pushbuf_refn (libgallium-26.0.6.so + 0xbe94bf)
+#9  0x00007f9689d313de nvc0_cb_bo_push (libgallium-26.0.6.so + 0x13313de)
+#10 0x00007f9689d9afc7 nvc0_constbufs_validate (libgallium-26.0.6.so + 0x139afc7)
+#11 0x00007f9689d9ff8e nvc0_state_validate (libgallium-26.0.6.so + 0x139ff8e)
+#12 0x00007f9689da015f nvc0_state_validate_3d (libgallium-26.0.6.so + 0x13a015f)
+#13 0x00007f9689da2055 nvc0_draw_vbo (libgallium-26.0.6.so + 0x13a2055)
+#14 0x00007f9688cf2d6f _mesa_draw_arrays.part.0 (libgallium-26.0.6.so + 0x2f2d6f)
+#15 0x00007f96bd743a78 _cogl_journal_flush_modelview_and_entries (libmutter-cogl-18.so.0 + 0x38a78)
+#16 0x00007f96bd743ef6 _cogl_journal_flush_texcoord_vbo_offsets_and_entries (libmutter-cogl-18.so.0 + 0x38ef6)
+#17 0x00007f96bd744141 _cogl_journal_flush_vbo_offsets_and_entries (libmutter-cogl-18.so.0 + 0x39141)
+#18 0x00007f96bd7448b3 _cogl_journal_flush_viewport_and_entries (libmutter-cogl-18.so.0 + 0x398b3)
+#19 0x00007f96bd745312 _cogl_journal_flush (libmutter-cogl-18.so.0 + 0x3a312)
+#20 0x00007f96bd74d5fa cogl_onscreen_swap_buffers_with_damage (libmutter-cogl-18.so.0 + 0x425fa)
+#21 0x00007f96bdc7da8a meta_stage_impl_redraw_view (libmutter-18.so.0 + 0x7da8a)
+#22 0x00007f96bddab0ac meta_stage_native_redraw_view (libmutter-18.so.0 + 0x1ab0ac)
+#23 0x00007f96be03c879 handle_frame_clock_frame (libmutter-clutter-18.so.0 + 0x87879)
+#24 0x00007f96be008f46 clutter_frame_clock_dispatch (libmutter-clutter-18.so.0 + 0x53f46)
+#25 0x00007f96be0092f1 frame_clock_source_dispatch (libmutter-clutter-18.so.0 + 0x542f1)
+#26 0x00007f96be2f3f24 g_main_context_dispatch_unlocked.lto_priv.0 (libglib-2.0.so.0 + 0x43f24)
+#27 0x00007f96be2f8038 g_main_context_iterate_unlocked.isra.0 (libglib-2.0.so.0 + 0x48038)
+#28 0x00007f96be2f82e7 g_main_loop_run (libglib-2.0.so.0 + 0x482e7)
+#29 0x00007f96bdcb546a meta_context_run_main_loop (libmutter-18.so.0 + 0xb546a)
+#30 0x00007f96bd04e056 ffi_call_unix64 (libffi.so.8 + 0x8056)
+#31 0x00007f96bd04a05c ffi_call_int.lto_priv.0 (libffi.so.8 + 0x405c)
+#32 0x00007f96bd04cd8e ffi_call (libffi.so.8 + 0x6d8e)
+#33 0x00007f96be13938a _ZN3Gjs8Function6invokeEP9JSContextRKN2JS8CallArgsENS3_6HandleIP8JSObjectEEP11_GIArgument (libgjs.so.0 + 0x6738a)
+#34 0x00007f96be139d09 _ZN3Gjs8Function4callEP9JSContextjPN2JS5ValueE (libgjs.so.0 + 0x67d09)
+#35 0x00007f96bba2cb74 _ZN2js23InternalCallOrConstructEP9JSContextRKN2JS8CallArgsENS_14MaybeConstructENS_10CallReasonE (libmozjs-140.so.0 + 0x2cb74)
+#36 0x00007f96bba3d221 _ZN2js9InterpretEP9JSContextRNS_8RunStateE (libmozjs-140.so.0 + 0x3d221)
+#37 0x00007f96bba2c28c _ZN2js9RunScriptEP9JSContextRNS_8RunStateE (libmozjs-140.so.0 + 0x2c28c)
+#38 0x00007f96bba2ca3b _ZN2js23InternalCallOrConstructEP9JSContextRKN2JS8CallArgsENS_14MaybeConstructENS_10CallReasonE (libmozjs-140.so.0 + 0x2ca3b)
+#39 0x00007f96bba2d0ac _ZN2js4CallEP9JSContextN2JS6HandleINS2_5ValueEEES5_RKNS_13AnyInvokeArgsENS2_13MutableHandleIS4_EENS_10CallReasonE (libmozjs-140.so.0 + 0x2d0ac)
+#40 0x00007f96bbb073cb _ZN2JS4CallEP9JSContextNS_6HandleINS_5ValueEEES4_RKNS_16HandleValueArrayENS_13MutableHandleIS3_EE (libmozjs-140.so.0 + 0x1073cb)
+#41 0x00007f96be199e12 _ZN17GjsContextPrivate18run_main_loop_hookEv (libgjs.so.0 + 0xc7e12)
+#42 0x00007f96be1a150f gjs_context_eval_module (libgjs.so.0 + 0xcf50f)
+#43 0x00007f96be1a1671 gjs_context_eval_module_file (libgjs.so.0 + 0xcf671)
+#44 0x000055e8aa56a307 main (/usr/bin/gnome-shell + 0x1307)
+#45 0x00007f96bda08681 __libc_start_call_main (libc.so.6 + 0x3681)
+#46 0x00007f96bda08798 __libc_start_main@@GLIBC_2.34 (libc.so.6 + 0x3798)
+#47 0x000055e8aa56a6f5 _start (/usr/bin/gnome-shell + 0x16f5)
+#+end_quote
+
+It seems the =/lib/firmwares/nvidia= was kind on empty, so I install
+them:
+
+#+begin_src bash
+  dnf install nvidia-gpu-firmware
+#+end_src
+
+No idea if that solves the issue but I did not get any crashes in the
+last 24 hours. Let's see how it goes on a longer period.
+
 *** Interesting Remarks
 
 **** Do not use a Display Manager other than =gdm=
